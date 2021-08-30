@@ -59,6 +59,7 @@ export class PwDragDropDirective {
 
     this.prevX = event.clientX;
     this.prevY = event.clientY;
+
   }
 
   @HostListener('window:mouseup', ['$event'])
@@ -74,10 +75,28 @@ export class PwDragDropDirective {
 
     var x = event.clientX - this.prevX;
     var y = event.clientY - this.prevY;
-    
 
-    this.renderer.setStyle(this.element.nativeElement, "transform", `translate(${x}px, ${y}px)`);
+    var rects = (this.element.nativeElement as HTMLElement).getBoundingClientRect();
+    var windowWidth = window.innerWidth;
+    var windowHeight = window.innerHeight;
 
+
+    if (rects.x < 0 || rects.x + rects.width > windowWidth) {
+        this.renderer.setStyle(this.element.nativeElement, "background-color", "red");
+    }
+    else{
+      this.renderer.removeStyle(this.element.nativeElement, "background-color");
+    }
+
+    if(rects.y < 0 || rects.y + rects.height > windowHeight)
+    {
+      this.renderer.removeStyle(this.element.nativeElement, "transform");
+      this.isMouseDown = false;
+    }
+    else{
+      this.renderer.setStyle(this.element.nativeElement, "transform", `translate(${x}px, ${y}px)`);
+
+    }
   }
 
 }
