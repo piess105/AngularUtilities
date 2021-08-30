@@ -32,10 +32,12 @@ export class PwDragDropDirective {
 
   - Check whether the element is out of the screen on x  and change its color if not return its initial color
   - Check whether the element is out of the screen on y and set its position to original and realse from moving
-  
+   
+
    NEEDS:
 
   - Get min and max screen size both x and y
+  - Get element bouding rects (width height x y)
   - Change element color
   - Change element position
 
@@ -72,8 +74,10 @@ export class PwDragDropDirective {
 
     var x = event.clientX - this.prevX;
     var y = event.clientY - this.prevY;
+    
 
     this.renderer.setStyle(this.element.nativeElement, "transform", `translate(${x}px, ${y}px)`);
+
   }
 
 }
