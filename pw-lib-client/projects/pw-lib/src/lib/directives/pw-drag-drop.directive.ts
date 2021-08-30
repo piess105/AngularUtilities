@@ -21,6 +21,12 @@ export class PwDragDropDirective {
   - Mouse movement coordinates
   - Returning the element when mouse is over (or clicked)
   - Changing element position
+
+
+   EXTENSIONS:
+
+  - change the element color to red if the element's edge's left or right goes out of the screen
+  - return the element into its original position(and stop draging in this turn) if the elements' edge's up or down goes out of the screen
   */
 
 
