@@ -7,4 +7,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'pw-lib-client';
+
+  items = [{ name: "Egg" }, { name: "Oil" }, { name: "Banana" }];
+
 }

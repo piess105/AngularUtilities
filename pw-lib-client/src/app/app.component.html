@@ -1,1 +1,16 @@
-<ul pw-drag-drop></ul>
+<div class="wrapper">
+  <div class="products">
+    <ul class="products__items">
+      <li class="products__item" *ngFor="let item of items">
+        <button class="products__btn btn">
+
+          {{item.name}}
+        </button>
+        <div class="rectangle"
+          style="position: absolute; right: 10px; top: calc(50% - 5px); width: 10px; height: 10px; background-color: red;"></div>
+
+      </li>
+    </ul>
+  </div>
+
+</div>
