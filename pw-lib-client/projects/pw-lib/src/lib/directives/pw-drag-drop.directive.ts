@@ -25,8 +25,20 @@ export class PwDragDropDirective {
 
    EXTENSIONS:
 
-  - change the element color to red if the element's edge's left or right goes out of the screen
+  - change the element color to red if the element's edge's left or right goes out of the screen. Return its original color when element goes back. 
   - return the element into its original position(and stop draging in this turn) if the elements' edge's up or down goes out of the screen
+
+   Steps:
+
+  - Check whether the element is out of the screen on x  and change its color if not return its initial color
+  - Check whether the element is out of the screen on y and set its position to original and realse from moving
+  
+   NEEDS:
+
+  - Get min and max screen size both x and y
+  - Change element color
+  - Change element position
+
   */
 
 
@@ -58,8 +70,8 @@ export class PwDragDropDirective {
     if (!this.isMouseDown)
       return;
 
-     var x = event.clientX - this.prevX;
-     var y = event.clientY - this.prevY;
+    var x = event.clientX - this.prevX;
+    var y = event.clientY - this.prevY;
 
     this.renderer.setStyle(this.element.nativeElement, "transform", `translate(${x}px, ${y}px)`);
   }
