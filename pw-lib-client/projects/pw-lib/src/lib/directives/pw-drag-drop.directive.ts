@@ -41,6 +41,11 @@ export class PwDragDropDirective {
   - Change element color
   - Change element position
 
+
+   BUG FIX:
+
+  - fix the bug when element turns red and the same time goes out of screen on Y and does not change the color to initial color.
+
   */
 
 
