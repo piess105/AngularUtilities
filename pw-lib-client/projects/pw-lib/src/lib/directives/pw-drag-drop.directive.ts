@@ -96,6 +96,7 @@ export class PwDragDropDirective {
     if(rects.y < 0 || rects.y + rects.height > windowHeight)
     {
       this.renderer.removeStyle(this.element.nativeElement, "transform");
+      this.renderer.removeStyle(this.element.nativeElement, "background-color");
       this.isMouseDown = false;
     }
     else{
