@@ -20,16 +20,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'pw-lib-client'`, () => {
+  it(`should have as title 'pw-drag-drop-test-client'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('pw-lib-client');
+    expect(app.title).toEqual('pw-drag-drop-test-client');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('pw-lib-client app is running!');
+    expect(compiled.querySelector('.content span').textContent).toContain('pw-drag-drop-test-client app is running!');
   });
 });

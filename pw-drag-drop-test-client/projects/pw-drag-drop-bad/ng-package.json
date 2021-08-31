@@ -1,6 +1,6 @@
 {
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
-  "dest": "../../dist/pw-lib",
+  "dest": "../../dist/pw-drag-drop-bad",
   "lib": {
     "entryFile": "src/public-api.ts"
   }

@@ -15,9 +15,9 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "paths": {
-      "pw-lib": [
-        "dist/pw-lib/pw-lib",
-        "dist/pw-lib"
+      "pw-drag-drop-bad": [
+        "dist/pw-drag-drop-bad/pw-drag-drop-bad",
+        "dist/pw-drag-drop-bad"
       ]
     },
     "target": "es2017",

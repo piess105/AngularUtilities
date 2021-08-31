@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "pw-lib-client": {
+    "pw-drag-drop-test-client": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/pw-lib-client",
+            "outputPath": "dist/pw-drag-drop-test-client",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -72,10 +72,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "pw-lib-client:build:production"
+              "browserTarget": "pw-drag-drop-test-client:build:production"
             },
             "development": {
-              "browserTarget": "pw-lib-client:build:development"
+              "browserTarget": "pw-drag-drop-test-client:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -83,7 +83,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "pw-lib-client:build"
+            "browserTarget": "pw-drag-drop-test-client:build"
           }
         },
         "test": {
@@ -106,23 +106,23 @@
         }
       }
     },
-    "pw-lib": {
+    "pw-drag-drop-bad": {
       "projectType": "library",
-      "root": "projects/pw-lib",
-      "sourceRoot": "projects/pw-lib/src",
+      "root": "projects/pw-drag-drop-bad",
+      "sourceRoot": "projects/pw-drag-drop-bad/src",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "project": "projects/pw-lib/ng-package.json"
+            "project": "projects/pw-drag-drop-bad/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/pw-lib/tsconfig.lib.prod.json"
+              "tsConfig": "projects/pw-drag-drop-bad/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "projects/pw-lib/tsconfig.lib.json"
+              "tsConfig": "projects/pw-drag-drop-bad/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -130,13 +130,13 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/pw-lib/src/test.ts",
-            "tsConfig": "projects/pw-lib/tsconfig.spec.json",
-            "karmaConfig": "projects/pw-lib/karma.conf.js"
+            "main": "projects/pw-drag-drop-bad/src/test.ts",
+            "tsConfig": "projects/pw-drag-drop-bad/tsconfig.spec.json",
+            "karmaConfig": "projects/pw-drag-drop-bad/karma.conf.js"
           }
         }
       }
     }
   },
-  "defaultProject": "pw-lib-client"
+  "defaultProject": "pw-drag-drop-test-client"
 }

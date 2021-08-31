@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'pw-lib-client';
+  title = 'pw-drag-drop-test-client';
 
   items = [{ name: "Egg" }, { name: "Oil" }, { name: "Banana" }];
 

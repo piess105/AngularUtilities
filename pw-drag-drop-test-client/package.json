@@ -1,5 +1,5 @@
 {
-  "name": "pw-lib-client",
+  "name": "pw-drag-drop-test-client",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",

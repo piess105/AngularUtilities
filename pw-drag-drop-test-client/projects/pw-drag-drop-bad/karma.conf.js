@@ -25,7 +25,7 @@ module.exports = function (config) {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/pw-lib-client'),
+      dir: require('path').join(__dirname, '../../coverage/pw-drag-drop-bad'),
       subdir: '.',
       reporters: [
         { type: 'html' },
