@@ -54,7 +54,6 @@ export class PwDragDropDirective {
   private prevY = 0;
 
   constructor(private element: ElementRef, private renderer: Renderer2) {
-    console.log("HI");
   }
 
   @HostListener('mousedown', ['$event'])
@@ -87,19 +86,18 @@ export class PwDragDropDirective {
 
 
     if (rects.x < 0 || rects.x + rects.width > windowWidth) {
-        this.renderer.setStyle(this.element.nativeElement, "background-color", "red");
+      this.renderer.setStyle(this.element.nativeElement, "background-color", "red");
     }
-    else{
+    else {
       this.renderer.removeStyle(this.element.nativeElement, "background-color");
     }
 
-    if(rects.y < 0 || rects.y + rects.height > windowHeight)
-    {
+    if (rects.y < 0 || rects.y + rects.height > windowHeight) {
       this.renderer.removeStyle(this.element.nativeElement, "transform");
       this.renderer.removeStyle(this.element.nativeElement, "background-color");
       this.isMouseDown = false;
     }
-    else{
+    else {
       this.renderer.setStyle(this.element.nativeElement, "transform", `translate(${x}px, ${y}px)`);
     }
   }
