@@ -1,3 +1,5 @@
+import { Renderer2 } from "@angular/core";
+
 export interface IElementFacade {
 
     move(x: number, y: number): void;
@@ -5,12 +7,15 @@ export interface IElementFacade {
 
 export class ElementFacade implements IElementFacade {
 
-    constructor(element: Element) {
+    constructor(
+        private renderer: Renderer2,
+        private element: Element) {
 
     }
 
     move(x: number, y: number): void {
-        throw new Error("Method not implemented.");
+
+        this.renderer.setStyle(this.element, "transform", `translate(${x}px, ${y}px`);
     }
 
 }

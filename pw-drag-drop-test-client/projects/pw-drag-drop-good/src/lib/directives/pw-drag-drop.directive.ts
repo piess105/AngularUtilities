@@ -1,7 +1,16 @@
 import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
+import { MovableElementCache } from './caches/MovableElementCache';
+import { MoveElementCommand } from './commands/MoveElementCommand';
+import { MovableElementFactory } from './factories/MovableElementFactory';
+import { CommandInvoker } from './invokers/CommandInvoker';
+import { MouseElementListener } from './listeners/MouseElementListener';
+import { MouseListener } from './listeners/MouseListener';
+import { MovableElementCaching } from './observables/MovableElementCaching';
+import { MovableElementObservable } from './observables/MovableElementObservable';
 
 @Directive({
-  selector: '[pw-drag-drop]'
+  selector: '[pw-drag-drop]',
+  providers: [CommandInvoker, MovableElementCache, MouseListener, MovableElementCaching, MoveElementCommand, MovableElementFactory, MouseElementListener, MovableElementObservable]
 })
 export class PwDragDropDirective {
   /* 
@@ -49,57 +58,30 @@ export class PwDragDropDirective {
   */
 
 
-  private isMouseDown = false;
-  private prevX = 0;
-  private prevY = 0;
+  constructor(private mouseListener: MouseListener, commandInvoker : CommandInvoker) {
+  }
 
-  constructor(private element: ElementRef, private renderer: Renderer2) {
+  ngAfterViewInit() {
+
   }
 
   @HostListener('mousedown', ['$event'])
   onMouseDown(event: MouseEvent) {
 
-    this.isMouseDown = true;
-
-    this.prevX = event.clientX;
-    this.prevY = event.clientY;
-
+    this.mouseListener.mouseDown.next(event);
   }
 
   @HostListener('window:mouseup', ['$event'])
   onMouseUp(event: MouseEvent) {
 
-    this.isMouseDown = false;
+    this.mouseListener.mouseUp.next(event);
+
   }
 
   @HostListener('window:mousemove', ['$event'])
   onMouseMove(event: MouseEvent) {
-    if (!this.isMouseDown)
-      return;
 
-    var x = event.clientX - this.prevX;
-    var y = event.clientY - this.prevY;
-
-    var rects = (this.element.nativeElement as HTMLElement).getBoundingClientRect();
-    var windowWidth = window.innerWidth;
-    var windowHeight = window.innerHeight;
-
-
-    if (rects.x < 0 || rects.x + rects.width > windowWidth) {
-      this.renderer.setStyle(this.element.nativeElement, "background-color", "red");
-    }
-    else {
-      this.renderer.removeStyle(this.element.nativeElement, "background-color");
-    }
-
-    if (rects.y < 0 || rects.y + rects.height > windowHeight) {
-      this.renderer.removeStyle(this.element.nativeElement, "transform");
-      this.renderer.removeStyle(this.element.nativeElement, "background-color");
-      this.isMouseDown = false;
-    }
-    else {
-      this.renderer.setStyle(this.element.nativeElement, "transform", `translate(${x}px, ${y}px)`);
-    }
+    this.mouseListener.mouseMove.next(event);
   }
 
 }
