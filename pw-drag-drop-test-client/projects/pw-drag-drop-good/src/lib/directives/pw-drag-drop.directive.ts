@@ -1,4 +1,5 @@
 import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
+import { MouseMovingCache } from './caches/MouseMovingCache';
 import { MovableElementCache } from './caches/MovableElementCache';
 import { MoveElementCommand } from './commands/MoveElementCommand';
 import { MovableElementFactory } from './factories/MovableElementFactory';
@@ -10,7 +11,7 @@ import { MovableElementObservable } from './observables/MovableElementObservable
 
 @Directive({
   selector: '[pw-drag-drop]',
-  providers: [CommandInvoker, MovableElementCache, MouseListener, MovableElementCaching, MoveElementCommand, MovableElementFactory, MouseElementListener, MovableElementObservable]
+  providers: [CommandInvoker, MovableElementCache, MouseListener, MovableElementCaching, MoveElementCommand, MovableElementFactory, MouseElementListener, MovableElementObservable, MouseMovingCache]
 })
 export class PwDragDropDirective {
   /* 
