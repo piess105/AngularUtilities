@@ -14,3 +14,17 @@ export class ChangeElementColorCommand implements ICommand {
 
     }
 }
+
+@Injectable()
+export class ChangeElementColorToDefaultCommand implements ICommand {
+
+    constructor(private renderer : Renderer2){
+
+    }
+
+    execute(element: Element): void {
+        
+        this.renderer.removeStyle(element, "background-color");
+
+    }
+}

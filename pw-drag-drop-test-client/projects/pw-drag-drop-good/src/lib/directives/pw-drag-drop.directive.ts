@@ -1,15 +1,16 @@
-import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
-import { ChangeElementColorCommand } from './commands/ChangeElementColorCommand';
+import { Directive, ElementRef, HostListener, Injector, Renderer2 } from '@angular/core';
+import { ChangeElementColorCommand, ChangeElementColorToDefaultCommand } from './commands/ChangeElementColorCommand';
 import { MoveElementCommand } from './commands/MoveElementCommand';
 import { CommandInvokerRegister } from './invokers/CommandInvoker';
 import { MouseListener } from './listeners/MouseListener';
 import { ElementMoverObservable } from './observables/ElementMoverObservable';
 import { MouseSlidingOnElementObservable } from './observables/MouseSlidingOnElementObservable';
-import { MovingElementOutOfTheScreenOnXObservable } from './observables/MovingElementOutOfTheScreenOnXObservable';
+import { ElementStateIn_NotifiesWhenOutObservable, ElementStateInOutHandler, ElementStateOut_NotifiesWhenInObservable } from './states/ElementStateOut';
 
 @Directive({
   selector: '[pw-drag-drop]',
-  providers: [ MouseListener, MoveElementCommand, MovingElementOutOfTheScreenOnXObservable, CommandInvokerRegister, ChangeElementColorCommand, MouseSlidingOnElementObservable, ElementMoverObservable]
+  providers: [ MouseListener, MoveElementCommand, CommandInvokerRegister, ChangeElementColorCommand, ChangeElementColorToDefaultCommand, MouseSlidingOnElementObservable, ElementMoverObservable,
+    ElementStateOut_NotifiesWhenInObservable, ElementStateIn_NotifiesWhenOutObservable, ElementStateInOutHandler]
 })
 export class PwDragDropDirective {
   /* 
@@ -57,14 +58,21 @@ export class PwDragDropDirective {
   */
 
 
-  constructor(private mouseListener: MouseListener, private commandInvokerRegister: CommandInvokerRegister) {
+  constructor(
+    private injector : Injector,
+    private mouseListener: MouseListener, private commandInvokerRegister: CommandInvokerRegister, private handler : ElementStateInOutHandler) {
   }
 
   ngAfterViewInit() {
 
     this.commandInvokerRegister
     .register(MouseSlidingOnElementObservable, MoveElementCommand)
-    .register(MovingElementOutOfTheScreenOnXObservable,ChangeElementColorCommand);
+    .register(ElementStateIn_NotifiesWhenOutObservable,ChangeElementColorCommand)
+    .register(ElementStateOut_NotifiesWhenInObservable,ChangeElementColorToDefaultCommand)
+    
+
+
+    this.handler.setState(this.injector.get(ElementStateIn_NotifiesWhenOutObservable));
   }
 
   @HostListener('mousedown', ['$event'])
