@@ -1,12 +1,5 @@
-export interface IObservable {
-    subscribe(observer: IObserver): void;
-    unsubscribe(observer: IObserver): void;
-}
+import { IObservable, IObserver } from "../interfaces/IObserver";
 
-export interface IObserver {
-
-    notified(obj: any): void;
-}
 
 
 export abstract class ObservableBase implements IObservable {

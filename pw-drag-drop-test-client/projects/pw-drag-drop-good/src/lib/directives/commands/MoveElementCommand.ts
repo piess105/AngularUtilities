@@ -1,31 +1,20 @@
-import { Injectable } from "@angular/core";
-import { MouseMovingCache } from "../caches/MouseMovingCache";
-import { MovableElementCache } from "../caches/MovableElementCache";
-import { ICommand } from "./ICommand";
+import { Injectable, Renderer2 } from "@angular/core";
+import { ICommand } from "../interfaces/ICommand";
+import { ElementPositionModel } from "../models/ElementPositionModel";
+
+
 
 @Injectable()
 export class MoveElementCommand implements ICommand {
 
     constructor(
-        private mouseMovementCache: MouseMovingCache,
-        private cache: MovableElementCache) {
+        private renderer : Renderer2) {
 
     }
 
-    execute(obj: any): void {
+    execute(zomo : ElementPositionModel): void {
 
-        var element = this.cache.get()[0];
-
-        var cache = this.mouseMovementCache.get();
-
-        if (cache == undefined)
-            return;
-
-        
-        var x = cache.currentPoint.x - cache.startingPoint.x;
-        var y = cache.currentPoint.y - cache.startingPoint.y;
-
-        element.move(x,y);
+        this.renderer.setStyle(zomo.element, "transform", `translate(${zomo.x}px, ${zomo.y}px)`);
 
     }
 

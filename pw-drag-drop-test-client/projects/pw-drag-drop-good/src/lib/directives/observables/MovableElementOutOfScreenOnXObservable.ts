@@ -1,25 +1,16 @@
 import { Injectable } from "@angular/core";
-import { MovableElement } from "../models/MovableElement";
-import { IObserver, ObservableBase } from "./IObservable";
-import { MovableElementObservable } from "./MovableElementObservable";
+import { IObserver } from "../interfaces/IObserver";
+import { ObservableBase } from "./ObservableBase";
 
 @Injectable()
 export class MovableElementOutOfScreenOnXObservable extends ObservableBase implements IObserver {
-    constructor(observable: MovableElementObservable) {
-        super();
+ 
+    notified(obj: any): void {
 
-        observable.subscribe(this);
-    }
-    private moved = false;
-    notified(obj: MovableElement): void {
+        var rects = obj.element.getBoundingClientRect();
 
-        
-
-
-        if(this.moved == false){
-            this.moved = true;
+        if (rects.x < 0 || rects.x + rects.width > window.innerWidth) {
             this.notify(obj);
-
         }
     }
 }
