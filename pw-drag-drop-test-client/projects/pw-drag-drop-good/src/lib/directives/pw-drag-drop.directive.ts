@@ -3,12 +3,13 @@ import { ChangeElementColorCommand } from './commands/ChangeElementColorCommand'
 import { MoveElementCommand } from './commands/MoveElementCommand';
 import { CommandInvokerRegister } from './invokers/CommandInvoker';
 import { MouseListener } from './listeners/MouseListener';
+import { ElementMoverObservable } from './observables/ElementMoverObservable';
 import { MouseSlidingOnElementObservable } from './observables/MouseSlidingOnElementObservable';
-import { MovableElementOutOfScreenOnXObservable } from './observables/MovableElementOutOfScreenOnXObservable';
+import { MovingElementOutOfTheScreenOnXObservable } from './observables/MovingElementOutOfTheScreenOnXObservable';
 
 @Directive({
   selector: '[pw-drag-drop]',
-  providers: [ MouseListener, MoveElementCommand, MovableElementOutOfScreenOnXObservable, CommandInvokerRegister, ChangeElementColorCommand, MouseSlidingOnElementObservable]
+  providers: [ MouseListener, MoveElementCommand, MovingElementOutOfTheScreenOnXObservable, CommandInvokerRegister, ChangeElementColorCommand, MouseSlidingOnElementObservable, ElementMoverObservable]
 })
 export class PwDragDropDirective {
   /* 
@@ -63,7 +64,7 @@ export class PwDragDropDirective {
 
     this.commandInvokerRegister
     .register(MouseSlidingOnElementObservable, MoveElementCommand)
-  //  .register(MovableElementOutOfScreenOnXObservable,ChangeElementColorCommand);
+    .register(MovingElementOutOfTheScreenOnXObservable,ChangeElementColorCommand);
   }
 
   @HostListener('mousedown', ['$event'])

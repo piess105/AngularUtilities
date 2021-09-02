@@ -1,6 +1,7 @@
 import { Injectable, Renderer2 } from "@angular/core";
 import { ICommand } from "../interfaces/ICommand";
 import { ElementPositionModel } from "../models/ElementPositionModel";
+import { ElementMoverObservable } from "../observables/ElementMoverObservable";
 
 
 
@@ -8,13 +9,14 @@ import { ElementPositionModel } from "../models/ElementPositionModel";
 export class MoveElementCommand implements ICommand {
 
     constructor(
+        private mover : ElementMoverObservable,
         private renderer : Renderer2) {
 
     }
 
-    execute(zomo : ElementPositionModel): void {
+    execute(model : ElementPositionModel): void {
 
-        this.renderer.setStyle(zomo.element, "transform", `translate(${zomo.x}px, ${zomo.y}px)`);
+        this.mover.move(model.element, model.x, model.y);
 
     }
 
