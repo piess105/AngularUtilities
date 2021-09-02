@@ -1,17 +1,20 @@
 import { NgModule } from '@angular/core';
 import { PwDragDropDirective } from './directives/pw-drag-drop.directive';
+import { PwContainerDirective } from './directives/pw-container.directive';
 
 
 
 
 @NgModule({
   declarations: [
-    PwDragDropDirective
+    PwDragDropDirective,
+    PwContainerDirective
   ],
   imports: [
   ],
   exports: [
-    PwDragDropDirective
+    PwDragDropDirective,
+    PwContainerDirective
   ]
 })
 export class PwDragDropModule { }
