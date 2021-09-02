@@ -6,7 +6,7 @@ export class MovableElementObservable extends ObservableBase implements IObserve
 
     notified(obj: any): void {
         
-        console.log("ELEMNTS MOVING", obj);
+        this.notify(obj);
     }
 
 

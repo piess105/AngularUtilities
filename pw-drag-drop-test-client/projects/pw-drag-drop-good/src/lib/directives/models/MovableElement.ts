@@ -7,7 +7,7 @@ export class MovableElement extends ObservableBase implements IDisposable {
     constructor(
         private observer : IObserver,
         private renderer: Renderer2,
-        private element: Element) {
+        public element: Element) {
         super();
     }
    

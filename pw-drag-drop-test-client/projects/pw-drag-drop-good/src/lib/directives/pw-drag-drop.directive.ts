@@ -1,17 +1,19 @@
 import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
 import { MouseMovingCache } from './caches/MouseMovingCache';
 import { MovableElementCache } from './caches/MovableElementCache';
+import { ChangeElementColorCommand } from './commands/ChangeElementColorCommand';
 import { MoveElementCommand } from './commands/MoveElementCommand';
 import { MovableElementFactory } from './factories/MovableElementFactory';
-import { CommandInvoker } from './invokers/CommandInvoker';
+import { CommandInvoker, CommandInvokerRegister } from './invokers/CommandInvoker';
 import { MouseElementListener } from './listeners/MouseElementListener';
 import { MouseListener } from './listeners/MouseListener';
 import { MovableElementCaching } from './observables/MovableElementCaching';
 import { MovableElementObservable } from './observables/MovableElementObservable';
+import { MovableElementOutOfScreenOnXObservable } from './observables/MovableElementOutOfScreenOnXObservable';
 
 @Directive({
   selector: '[pw-drag-drop]',
-  providers: [CommandInvoker, MovableElementCache, MouseListener, MovableElementCaching, MoveElementCommand, MovableElementFactory, MouseElementListener, MovableElementObservable, MouseMovingCache]
+  providers: [CommandInvoker, MovableElementCache, MouseListener, MovableElementCaching, MoveElementCommand, MovableElementFactory, MouseElementListener, MovableElementObservable, MouseMovingCache, MovableElementOutOfScreenOnXObservable, CommandInvokerRegister, ChangeElementColorCommand]
 })
 export class PwDragDropDirective {
   /* 
@@ -59,11 +61,15 @@ export class PwDragDropDirective {
   */
 
 
-  constructor(private mouseListener: MouseListener, commandInvoker : CommandInvoker) {
+  constructor(private mouseListener: MouseListener, private commandInvokerRegister: CommandInvokerRegister) {
   }
 
   ngAfterViewInit() {
 
+    this.commandInvokerRegister
+    .register(MovableElementCaching, MoveElementCommand)
+    .register(MovableElementOutOfScreenOnXObservable,ChangeElementColorCommand)
+    ;
   }
 
   @HostListener('mousedown', ['$event'])
