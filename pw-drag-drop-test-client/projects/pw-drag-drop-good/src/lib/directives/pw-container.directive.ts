@@ -1,34 +1,36 @@
 import { Directive, ElementRef } from '@angular/core';
+import { DirectiveType } from './enums/DirectiveType';
 import { IObserver } from './interfaces/IObserver';
+import { CommandInvokerRegister } from './invokers/CommandInvoker';
+import { MousePosition } from './models/MousePosition';
 import { ElementMoverObservable } from './observables/ElementMoverObservable';
 import { GlobalElementMovementObservable } from './observables/GlobalElementMoverObservable';
+import { ContainerInState, ContainerOutState, ContainerStateHandler } from './states/ContainerInState';
+import { DirectiveStateRegister } from './states/DirectiveStateChanger';
 
 @Directive({
   selector: '[pw-container]',
+  providers: [CommandInvokerRegister, ContainerStateHandler, ContainerOutState, ContainerInState]
 })
-export class PwContainerDirective implements IObserver {
+export class PwContainerDirective {
 
   constructor(
-    private element: ElementRef,
-    private observable: GlobalElementMovementObservable) {
+    private stateRegister: DirectiveStateRegister,
+    private commandInvokerRegister: CommandInvokerRegister,
+    private handler: ContainerStateHandler,
+  ) {
 
-    observable.subscribe(this);
   }
 
+  ngAfterViewInit() {
 
-  notified(element: Element): void {
+    this.stateRegister.register(DirectiveType.Container,
+      () => { console.log("ContainerWake") },
+      () => { console.log("Sleep") });
 
-    console.log("HELLO");
+    this.handler.setState(ContainerOutState);
+
   }
 
-  private collides(x : number, y : number, collider : Element): boolean {
-
-    var coliderRect = collider.getBoundingClientRect();
-
-
-    
-
-    return false;
-  }
 
 }

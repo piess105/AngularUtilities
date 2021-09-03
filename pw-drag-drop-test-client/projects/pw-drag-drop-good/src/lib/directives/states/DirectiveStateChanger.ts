@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { DirectiveType } from "../enums/DirectiveType";
-import { StateChanger, StateConfigurationBase, StateRegister } from "./StateChanger";
+import { StateChangerBase, StateConfigurationBase, StateRegisterBase } from "./StateChangerBase";
 
 @Injectable({ providedIn: 'root' })
 export class DirectiveStateConfiguration extends StateConfigurationBase<DirectiveType>
@@ -9,14 +9,14 @@ export class DirectiveStateConfiguration extends StateConfigurationBase<Directiv
 }
 
 @Injectable({ providedIn: 'root' })
-export class DirectiveStateChanger extends StateChanger<DirectiveType>{
+export class DirectiveStateChanger extends StateChangerBase<DirectiveType>{
     constructor(configuration: DirectiveStateConfiguration) {
         super(configuration);
     }
 }
 
 @Injectable({ providedIn: 'root' })
-export class DirectiveStateRegister extends StateRegister<DirectiveType>{
+export class DirectiveStateRegister extends StateRegisterBase<DirectiveType>{
 
     constructor(configuration: DirectiveStateConfiguration) {
         super(configuration);

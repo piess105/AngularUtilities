@@ -5,7 +5,7 @@ export class StateAction {
     sleep!: () => void
   }
   
-  export abstract class StateRegister<T> {
+  export abstract class StateRegisterBase<T> {
   
     constructor(private configuration: StateConfigurationBase<T>) {
   
@@ -36,7 +36,7 @@ export class StateAction {
     }
   }
   
-  export abstract class StateChanger<T> {
+  export abstract class StateChangerBase<T> {
   
     private current?: T = undefined;
   

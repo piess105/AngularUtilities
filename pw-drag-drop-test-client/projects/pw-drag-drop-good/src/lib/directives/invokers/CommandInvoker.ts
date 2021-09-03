@@ -7,7 +7,7 @@ export class CommandInvoker<TObservable extends IObservable, TCommand extends IC
 
     constructor(private observable: TObservable, private command: TCommand) {
 
-        observable.subscribe(this);
+        
     }
 
     notified(obj: any): void {

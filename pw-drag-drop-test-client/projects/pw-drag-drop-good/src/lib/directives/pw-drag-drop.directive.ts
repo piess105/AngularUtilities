@@ -10,7 +10,7 @@ import { ElementMoverObservable } from './observables/ElementMoverObservable';
 import { MouseSlidingOnElementObservable } from './observables/MouseSlidingOnElementObservable';
 import { DirectiveStateChanger, DirectiveStateRegister } from './states/DirectiveStateChanger';
 import { ElementStateIn_NotifiesWhenOutObservable, ElementStateInOutHandler, ElementStateOut_NotifiesWhenInObservable } from './states/ElementStateOut';
-import { StateChanger, StateRegister } from './states/StateChanger';
+import { StateChangerBase, StateRegisterBase } from './states/StateChangerBase';
 
 @Directive({
   selector: '[pw-drag-drop]',
@@ -24,7 +24,8 @@ export class PwDragDropDirective {
     private stateChanged: DirectiveStateChanger,
     private stateRegister: DirectiveStateRegister,
     private injector: Injector,
-    private mouseListener: MouseListener, private commandInvokerRegister: CommandInvokerRegister, private handler: ElementStateInOutHandler) {
+    private mouseListener: MouseListener,
+    private commandInvokerRegister: CommandInvokerRegister, private handler: ElementStateInOutHandler) {
   }
 
   ngAfterViewInit() {
@@ -35,22 +36,14 @@ export class PwDragDropDirective {
       .register(ElementStateOut_NotifiesWhenInObservable, ChangeElementColorToDefaultCommand)
       .register(ElementMoverObservable, InvokeGlobalElementObservableCommand)
 
-    this.commandInvokerRegister.unsubscribe();
 
     this.stateRegister.register(DirectiveType.DragDrop, () => {
       this.commandInvokerRegister.resubscribe();
     }, () => {
       this.commandInvokerRegister.unsubscribe();
-
     });
 
-    this.stateRegister.register(DirectiveType.Container, () => { }, () => { });
-
     this.stateChanged.change(DirectiveType.DragDrop);
-
-    setTimeout(() => {
-      this.stateChanged.change(DirectiveType.Container);
-    }, 1000);
 
     this.handler.setState(this.injector.get(ElementStateIn_NotifiesWhenOutObservable));
   }
