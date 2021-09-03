@@ -16,20 +16,41 @@ export class CommandInvoker<TObservable extends IObservable, TCommand extends IC
     }
 }
 
+
+
 @Injectable()
 export class CommandInvokerRegister {
+
+    private map: Map<CommandInvoker<IObservable, ICommand>, IObservable> = new Map<CommandInvoker<IObservable, ICommand>, IObservable>();
 
     constructor(private injector: Injector) {
 
     }
 
-    register<TObservable extends IObservable, TCommand extends ICommand>(observable: Type<TObservable>, command : Type<TCommand>) {
+    register<TObservable extends IObservable, TCommand extends ICommand>(observable: Type<TObservable>, command: Type<TCommand>) {
 
         var obs = this.injector.get<TObservable>(observable);
         var c = this.injector.get<TCommand>(command);
 
         var r = new CommandInvoker<TObservable, TCommand>(obs, c);
 
+        this.map.set(r, obs);
+
         return this;
     }
+
+    unsubscribe() {
+
+        this.map.forEach((k, v) => {
+            k.unsubscribe(v);
+        });
+    }
+
+    resubscribe() {
+
+        this.map.forEach((k, v) => {
+            k.subscribe(v);
+        });
+    }
+
 }
