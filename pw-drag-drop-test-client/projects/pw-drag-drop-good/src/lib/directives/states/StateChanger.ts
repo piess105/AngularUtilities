@@ -5,26 +5,22 @@ export class StateAction {
     sleep!: () => void
   }
   
+  export abstract class StateRegister<T> {
   
-  
-  @Injectable({ providedIn: 'root' })
-  export class StateRegister {
-  
-    constructor(private configuration: StateConfiguration) {
+    constructor(private configuration: StateConfigurationBase<T>) {
   
     }
   
-    register(value: number, onWake: () => void, onSleep: () => void) {
+    register(value: T, onWake: () => void, onSleep: () => void) {
   
       this.configuration.add(value, { wake: onWake, sleep: onSleep });
     }
   }
   
-  @Injectable({ providedIn: 'root' })
-  export class StateConfiguration {
-    private map: Map<number, StateAction[]> = new Map<number, StateAction[]>();
+  export abstract class StateConfigurationBase<T> {
+    private map: Map<T, StateAction[]> = new Map<T, StateAction[]>();
   
-    add(value: number, action: StateAction) {
+    add(value: T, action: StateAction) {
   
       if (!this.map.has(value))
         this.map.set(value, []);
@@ -34,25 +30,24 @@ export class StateAction {
       concrete?.push(action);
     }
   
-    getActions(value: number): StateAction[] {
+    getActions(value: T): StateAction[] {
   
       return this.map.get(value)!;
     }
   }
   
-  @Injectable({ providedIn: 'root' })
-  export class StateChanger {
+  export abstract class StateChanger<T> {
   
-    private current: number = -1;
+    private current?: T = undefined;
   
   
-    constructor(private configuration: StateConfiguration) {
+    constructor(private configuration: StateConfigurationBase<T>) {
   
     }
   
-    change(value: number) {
+    change(value: T) {
   
-      if (this.current == -1) {
+      if (this.current == undefined) {
   
         this.wake(value);
       }
@@ -65,7 +60,7 @@ export class StateAction {
       this.current = value;
     }
   
-    private wake(value: number) {
+    private wake(value: T) {
   
       var actions = this.configuration.getActions(value);
   
@@ -74,7 +69,7 @@ export class StateAction {
       });
     }
   
-    private sleep(value: number) {
+    private sleep(value: T) {
   
       var actions = this.configuration.getActions(value);
   

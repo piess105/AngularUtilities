@@ -2,11 +2,13 @@ import { Directive, ElementRef, HostListener, Injectable, Injector, Renderer2 } 
 import { ChangeElementColorCommand, ChangeElementColorToDefaultCommand } from './commands/ChangeElementColorCommand';
 import { InvokeGlobalElementObservableCommand } from './commands/InvokeGlobalElementObservableCommand';
 import { MoveElementCommand } from './commands/MoveElementCommand';
+import { DirectiveType } from './enums/DirectiveType';
 import { CommandInvokerRegisterFactory } from './factories/CommandInvokerRegisterFactory';
 import { CommandInvokerRegister } from './invokers/CommandInvoker';
 import { MouseListener } from './listeners/MouseListener';
 import { ElementMoverObservable } from './observables/ElementMoverObservable';
 import { MouseSlidingOnElementObservable } from './observables/MouseSlidingOnElementObservable';
+import { DirectiveStateChanger, DirectiveStateRegister } from './states/DirectiveStateChanger';
 import { ElementStateIn_NotifiesWhenOutObservable, ElementStateInOutHandler, ElementStateOut_NotifiesWhenInObservable } from './states/ElementStateOut';
 import { StateChanger, StateRegister } from './states/StateChanger';
 
@@ -19,8 +21,8 @@ import { StateChanger, StateRegister } from './states/StateChanger';
 export class PwDragDropDirective {
 
   constructor(
-    private stateChanged : StateChanger,
-    private stateRegister: StateRegister,
+    private stateChanged: DirectiveStateChanger,
+    private stateRegister: DirectiveStateRegister,
     private injector: Injector,
     private mouseListener: MouseListener, private commandInvokerRegister: CommandInvokerRegister, private handler: ElementStateInOutHandler) {
   }
@@ -35,19 +37,19 @@ export class PwDragDropDirective {
 
     this.commandInvokerRegister.unsubscribe();
 
-    this.stateRegister.register(1, () => {
+    this.stateRegister.register(DirectiveType.DragDrop, () => {
       this.commandInvokerRegister.resubscribe();
     }, () => {
       this.commandInvokerRegister.unsubscribe();
 
     });
 
-    this.stateRegister.register(2, () => { }, () => { });
+    this.stateRegister.register(DirectiveType.Container, () => { }, () => { });
 
-    this.stateChanged.change(1);
+    this.stateChanged.change(DirectiveType.DragDrop);
 
     setTimeout(() => {
-      this.stateChanged.change(2);
+      this.stateChanged.change(DirectiveType.Container);
     }, 1000);
 
     this.handler.setState(this.injector.get(ElementStateIn_NotifiesWhenOutObservable));
