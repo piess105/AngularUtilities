@@ -10,4 +10,10 @@ export class AppComponent {
 
   items = [{ name: "Egg" }, { name: "Oil" }, { name: "Banana" }];
 
+  containerItems = [];
+
+  onAddElementCalled(item: any) {
+    console.log(item);
+  }
+
 }

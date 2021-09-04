@@ -2,7 +2,7 @@ export class CallOnce {
 
     private _prevConditionResult?: boolean;
   
-    IF(condition: () => boolean, ifConditonTrue: () => void, ifConditionFalse: () => void) {
+    Call(condition: () => boolean, ifConditonTrue: () => void, ifConditionFalse: () => void) {
   
       var conditionResult = condition();
   

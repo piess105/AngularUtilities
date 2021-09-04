@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener, Injectable, Injector, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, HostListener, Injectable, Injector, Input, Renderer2 } from '@angular/core';
 import { ChangeElementColorCommand, ChangeElementColorToDefaultCommand } from './commands/ChangeElementColorCommand';
 import { InvokeGlobalElementObservableCommand } from './commands/InvokeGlobalElementObservableCommand';
 import { MoveElementCommand } from './commands/MoveElementCommand';
@@ -9,37 +9,57 @@ import { MouseListener } from './listeners/MouseListener';
 import { ElementMoverObservable } from './observables/ElementMoverObservable';
 import { MouseSlidingOnElementObservable } from './observables/MouseSlidingOnElementObservable';
 import { DirectiveStateChanger, DirectiveStateRegister } from './states/DirectiveStateChanger';
-import { ElementStateIn_NotifiesWhenOutObservable, ElementStateInOutHandler, ElementStateOut_NotifiesWhenInObservable } from './states/ElementStateOut';
 import { StateChangerBase, StateRegisterBase } from './states/StateChangerBase';
+
+@Injectable()
+export class PwDragDropDirectiveProvider {
+
+  private _reference: any;
+
+  setReference(reference: any) {
+
+    this._reference = reference;
+  }
+
+  getReference(): any {
+
+    if (this._reference == undefined)
+      throw Error("Reference has not been set use: setReference to set");
+
+    return this._reference;
+  }
+
+}
 
 @Directive({
   selector: '[pw-drag-drop]',
   providers: [MouseListener, MoveElementCommand, CommandInvokerRegister, ChangeElementColorCommand, ChangeElementColorToDefaultCommand, MouseSlidingOnElementObservable, ElementMoverObservable,
-    ElementStateOut_NotifiesWhenInObservable, ElementStateIn_NotifiesWhenOutObservable, ElementStateInOutHandler, InvokeGlobalElementObservableCommand,
+    InvokeGlobalElementObservableCommand, PwDragDropDirectiveProvider,
     CommandInvokerRegisterFactory]
 })
 export class PwDragDropDirective {
 
+  @Input() reference: any;
+
   constructor(
+    private provider : PwDragDropDirectiveProvider,
     private stateChanged: DirectiveStateChanger,
     private stateRegister: DirectiveStateRegister,
     private injector: Injector,
     private mouseListener: MouseListener,
-    private commandInvokerRegister: CommandInvokerRegister, private handler: ElementStateInOutHandler) {
+    private commandInvokerRegister: CommandInvokerRegister) {
   }
 
   ngAfterViewInit() {
 
     this.commandInvokerRegister
       .register(MouseSlidingOnElementObservable, MoveElementCommand)
-      .register(ElementStateIn_NotifiesWhenOutObservable, ChangeElementColorCommand)
-      .register(ElementStateOut_NotifiesWhenInObservable, ChangeElementColorToDefaultCommand)
       .register(ElementMoverObservable, InvokeGlobalElementObservableCommand)
 
-      this.commandInvokerRegister.resubscribe();
+    this.commandInvokerRegister.resubscribe();
 
 
-    this.handler.setState(this.injector.get(ElementStateIn_NotifiesWhenOutObservable));
+    this.provider.setReference(this.reference);
   }
 
   @HostListener('mousedown', ['$event'])

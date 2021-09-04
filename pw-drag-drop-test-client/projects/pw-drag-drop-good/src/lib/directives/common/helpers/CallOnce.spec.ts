@@ -9,22 +9,22 @@ describe('CallOnce', () => {
             {
                 conditions: [true, true, false, false,],
                 valueToIncrement: 0,
-                expectedValueToIncrementCount: 0
+                expectedValueToIncrement: 0
             },
             {
                 conditions: [true, false, true, false,],
                 valueToIncrement: 0,
-                expectedValueToIncrementCount: 0
+                expectedValueToIncrement: 0
             },
             {
                 conditions: [true, true, true, true,],
                 valueToIncrement: 0,
-                expectedValueToIncrementCount: 1
+                expectedValueToIncrement: 1
             },
             {
                 conditions: [false, false, false, false,],
                 valueToIncrement: 0,
-                expectedValueToIncrementCount: -1
+                expectedValueToIncrement: -1
             }
         ]
 
@@ -33,10 +33,10 @@ describe('CallOnce', () => {
             var callOnce = new CallOnce();
             //Increments the value on true, Decrement the value on false
             c.conditions.forEach(condition => {
-                callOnce.IF(() => condition, () => c.valueToIncrement++, () => c.valueToIncrement--)
+                callOnce.Call(() => condition, () => c.valueToIncrement++, () => c.valueToIncrement--)
             });
 
-            expect(c.valueToIncrement).toBe(c.expectedValueToIncrementCount);
+            expect(c.valueToIncrement).toBe(c.expectedValueToIncrement);
         });
 
     })

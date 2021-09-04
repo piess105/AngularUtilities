@@ -1,18 +1,21 @@
 <div class="wrapper">
-  <div  class="products">
+  <div class="products">
     <ul class="products__items">
-      <li pw-drag-drop class="products__item" *ngFor="let item of items">
+      <li pw-drag-drop [reference]='item' class="products__item" *ngFor="let item of items">
         <button class="products__btn btn">
 
           {{item.name}}
         </button>
         <div class="rectangle"
-          style="position: absolute; right: 10px; top: calc(50% - 5px); width: 10px; height: 10px; background-color: red;"></div>
+          style="position: absolute; right: 10px; top: calc(50% - 5px); width: 10px; height: 10px; background-color: red;">
+        </div>
 
       </li>
     </ul>
   </div>
 
-  <div pw-container class="containerek"></div>
+  <ul pw-container (addElementCalled)="onAddElementCalled($event)" class="containerek">
+    <li *ngFor="let item of containerItems"> siemka</li>
+  </ul>
 
 </div>
