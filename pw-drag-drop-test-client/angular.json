@@ -136,6 +136,37 @@
           }
         }
       }
+    },
+    "pw-drag-drop-good": {
+      "projectType": "library",
+      "root": "projects/pw-drag-drop-good",
+      "sourceRoot": "projects/pw-drag-drop-good/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/pw-drag-drop-good/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/pw-drag-drop-good/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/pw-drag-drop-good/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/pw-drag-drop-good/src/test.ts",
+            "tsConfig": "projects/pw-drag-drop-good/tsconfig.spec.json",
+            "karmaConfig": "projects/pw-drag-drop-good/karma.conf.js"
+          }
+        }
+      }
     }
   },
   "defaultProject": "pw-drag-drop-test-client"

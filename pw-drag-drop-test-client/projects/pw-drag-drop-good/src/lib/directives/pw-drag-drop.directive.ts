@@ -36,14 +36,8 @@ export class PwDragDropDirective {
       .register(ElementStateOut_NotifiesWhenInObservable, ChangeElementColorToDefaultCommand)
       .register(ElementMoverObservable, InvokeGlobalElementObservableCommand)
 
-
-    this.stateRegister.register(DirectiveType.DragDrop, () => {
       this.commandInvokerRegister.resubscribe();
-    }, () => {
-      this.commandInvokerRegister.unsubscribe();
-    });
 
-    this.stateChanged.change(DirectiveType.DragDrop);
 
     this.handler.setState(this.injector.get(ElementStateIn_NotifiesWhenOutObservable));
   }
