@@ -67,7 +67,10 @@ export class TryConsumeSuppliedElementStrategy {
         
         this.renderer.setStyle(this._suppliedElementReference?.element, "opacity", "0");
 
-        this.directiveOutputCalled.callAddElementCalled(this._suppliedElementReference?.reference);        
+        this.directiveOutputCalled.callAddElementCalled(this._suppliedElementReference?.reference);      
+        
+        this.undoChangeTheElementBorderColor();
+        this.removeSuppliedElementReference();
     }
 
     collisionHasBeenDetected = (element: Element) => {

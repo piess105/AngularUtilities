@@ -24,7 +24,7 @@ export class PwDragDropDirectiveProvider {
   getReference(): any {
 
     if (this._reference == undefined)
-      throw Error("Reference has not been set use: setReference to set");
+      throw Error("Reference input has not been set, use: [reference]='any' in HTML to set");
 
     return this._reference;
   }

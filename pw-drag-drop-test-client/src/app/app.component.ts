@@ -10,10 +10,19 @@ export class AppComponent {
 
   items = [{ name: "Egg" }, { name: "Oil" }, { name: "Banana" }];
 
-  containerItems = [];
+  containerItems: any[] = [{ name: "Fish" }];
 
   onAddElementCalled(item: any) {
-    console.log(item);
+
+
+    var index = this.items.indexOf(item);
+
+    if (index == -1)
+      return;
+
+    this.items.splice(index, 1);
+
+    this.containerItems.push({ name: item.name });
   }
 
 }
