@@ -10,6 +10,7 @@ import { ElementMoverObservable, ElementWithReference } from './observables/Elem
 import { GlobalElementMovementObservable } from './observables/GlobalElementMoverObservable';
 import { ContainerInState, ContainerOutState, ContainerStateHandler } from './states/ContainerInState';
 import { DirectiveStateRegister } from './states/DirectiveStateChanger';
+import { ReorderElementsStrategy } from './strategies/ReorderElementsStrategy';
 import { TryConsumeSuppliedElementStrategy } from './strategies/TryConsumeElementStrategy';
 
 
@@ -37,7 +38,7 @@ export class PwContainerDirectiveOutputCaller {
 
 @Directive({
   selector: '[pw-container]',
-  providers: [CommandInvokerRegister, ContainerStateHandler, ContainerOutState, ContainerInState, TryConsumeSuppliedElementStrategy, PwContainerDirectiveOutputCaller]
+  providers: [CommandInvokerRegister, ContainerStateHandler, ContainerOutState, ContainerInState, TryConsumeSuppliedElementStrategy, PwContainerDirectiveOutputCaller, ReorderElementsStrategy]
 })
 export class PwContainerDirective implements IObserver {
 
@@ -45,7 +46,7 @@ export class PwContainerDirective implements IObserver {
 
   constructor(
     private outputCaller : PwContainerDirectiveOutputCaller,
-    private strategy: TryConsumeSuppliedElementStrategy,
+    private strategy: ReorderElementsStrategy,
     globalElementMovement: GlobalElementMovementObservable
 
   ) {

@@ -15,7 +15,7 @@
   </div>
 
   <ul pw-container (addElementCalled)="onAddElementCalled($event)" class="containerek">
-    <li pw-drag-drop [reference]='item' *ngFor="let item of containerItems"> {{item.name}}</li>
+    <li class="containerek__item" pw-drag-drop [reference]='item' *ngFor="let item of containerItems"> {{item.name}}</li>
   </ul>
 
 </div>

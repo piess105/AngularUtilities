@@ -10,7 +10,7 @@ export class AppComponent {
 
   items = [{ name: "Egg" }, { name: "Oil" }, { name: "Banana" }];
 
-  containerItems: any[] = [{ name: "Fish" }];
+  containerItems: any[] = [{ name: "Fish" }, { name: "Mozarella" }, { name: "Ketchup" }];
 
   onAddElementCalled(item: any) {
 
