@@ -18,8 +18,15 @@ export class ReorderElementsOnMovingUpStrategy extends ReorderElementsOnMovingSt
 
         elements  = this.excludeElementsToPreventDoubleMove(elements, model.element);
 
+        this.decreaseNewMovingElementIndexAttribute(model.element, elements);
+
         this.moveElementsDown(elements);
     }
+
+    protected decreaseNewMovingElementIndexAttribute = (movingElement: Element, elements: Element[]) => {
+
+        this.setMovingElementNewIndexAttrbute(movingElement, (prevValue) => prevValue - elements.length);
+    };
 
     private excludeElementsToPreventDoubleMove = (elements: Element[], movingElement: Element): Element[] => {
 

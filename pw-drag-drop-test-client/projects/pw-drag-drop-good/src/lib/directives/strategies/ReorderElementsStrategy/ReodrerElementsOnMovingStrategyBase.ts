@@ -3,14 +3,46 @@ import { ElementWithReference } from "../../observables/ElementMoverObservable";
 
 export abstract class ReorderElementsOnMovingStrategyBase {
 
+    protected NEW_INDEX_ATTRIBUTE_NAME = "new_index";
+
     constructor(
         protected renderer: Renderer2,
         protected element: ElementRef
     ) {
-        
+
     }
 
-    abstract execute(model: ElementWithReference, movingElementStartingPosition: number) : void;
+    abstract execute(model: ElementWithReference, movingElementStartingPosition: number): void;
+
+    protected getMovingElementNewIndexValue = (movingElement: Element) => {
+
+        return parseInt(movingElement.getAttribute(this.NEW_INDEX_ATTRIBUTE_NAME)!);
+    }
+
+    protected setMovingElementNewIndexAttrbute = (movingElement: Element, predicate: (prevValue: number) => number) => {
+
+        if (!movingElement.hasAttribute(this.NEW_INDEX_ATTRIBUTE_NAME)) {
+            this.renderer.setAttribute(movingElement, this.NEW_INDEX_ATTRIBUTE_NAME, this.getElementIndex(movingElement).toString());
+        }
+
+        var prevValue = parseInt(movingElement.getAttribute(this.NEW_INDEX_ATTRIBUTE_NAME)!);
+
+        prevValue = predicate(prevValue);
+
+        this.renderer.setAttribute(movingElement, this.NEW_INDEX_ATTRIBUTE_NAME, prevValue.toString());
+    }
+
+    protected getElementIndex = (element: Element): number => {
+
+        var children = this.getAllChildren();
+
+        for (var i = 0; i < children.length; i++) {
+            if (element == children[i])
+                return i;
+        }
+
+        return -1;
+    }
 
     protected getElementTransformY = (element: Element) => {
 
