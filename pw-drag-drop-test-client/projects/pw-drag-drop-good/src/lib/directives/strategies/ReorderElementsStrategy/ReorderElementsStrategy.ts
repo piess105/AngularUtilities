@@ -5,6 +5,7 @@ import { DirectionType, MovingDirectionDeterminerNotifiesWhenDirectionChange } f
 import { IObserver } from "../../interfaces/IObserver";
 import { MouseListenerBetter } from "../../listeners/MouseListener";
 import { ElementWithReference } from "../../observables/ElementMoverObservable";
+import { AdjustMovingElementPositionStrategy } from "./AdjustMovingElementPositionStrategy";
 import { ReorderElementsOnMovingStrategyBase } from "./ReodrerElementsOnMovingStrategyBase";
 import { ReorderElementsOnMovingDownStrategy } from "./ReorderElementsOnMovingDownStrategy";
 import { ReorderElementsOnMovingUpStrategy } from "./ReorderElementsOnMovingUpStrategy";
@@ -22,7 +23,8 @@ export class ReorderElementsStrategy implements IObserver {
     constructor(
         mouseListener: MouseListenerBetter,
         private collisonChecker: CollisionChecker,
-        private tryNotifyClientStrategy : TryNotifyClientStrategy,
+        private adjustMovingElementPositionStrategy: AdjustMovingElementPositionStrategy,
+        private tryNotifyClientStrategy: TryNotifyClientStrategy,
         private resetElementsOnMovingStrategy: ResetElementsOnMovingStrategy,
         private reorderElementsOnMovingDownStrategy: ReorderElementsOnMovingDownStrategy,
         private reorderElementsOnMovingUpStrategy: ReorderElementsOnMovingUpStrategy,
@@ -36,6 +38,10 @@ export class ReorderElementsStrategy implements IObserver {
 
     onMouseUp(event: MouseEvent): void {
 
+        if (this._movingElementReference == undefined)
+            return;
+
+        this.adjustMovingElementPositionStrategy.execute(this._movingElementReference, this._movingElementStartingPosition);
         this.tryNotifyClientStrategy.execute(this._movingElementReference);
     }
 

@@ -14,9 +14,36 @@ export class TryNotifyClientStrategy extends ReorderElementsOnMovingStrategyBase
     }
 
     execute(model: ElementWithReference): void {
-      
 
-        
+
+
 
     }
+
+    private canNotify = (): boolean => {
+
+        if (!this.hasMovingElementSwopWithOtherElemnent())
+            return false;
+
+        if (!this.isMovingElementInsideParentElement())
+            return false;
+
+
+        return true;
+    }
+
+    private hasMovingElementSwopWithOtherElemnent = (): boolean => {
+
+
+
+        return false;
+    }
+
+    private isMovingElementInsideParentElement = (): boolean => {
+
+
+        return false;
+    }
+
+
 }

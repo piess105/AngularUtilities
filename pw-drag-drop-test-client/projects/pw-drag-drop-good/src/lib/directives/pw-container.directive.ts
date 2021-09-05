@@ -10,6 +10,7 @@ import { ElementMoverObservable, ElementWithReference } from './observables/Elem
 import { GlobalElementMovementObservable } from './observables/GlobalElementMoverObservable';
 import { ContainerInState, ContainerOutState, ContainerStateHandler } from './states/ContainerInState';
 import { DirectiveStateRegister } from './states/DirectiveStateChanger';
+import { AdjustMovingElementPositionStrategy } from './strategies/ReorderElementsStrategy/AdjustMovingElementPositionStrategy';
 import { ReorderElementsOnMovingDownStrategy } from './strategies/ReorderElementsStrategy/ReorderElementsOnMovingDownStrategy';
 import { ReorderElementsOnMovingUpStrategy } from './strategies/ReorderElementsStrategy/ReorderElementsOnMovingUpStrategy';
 import { ReorderElementsStrategy } from './strategies/ReorderElementsStrategy/ReorderElementsStrategy';
@@ -42,7 +43,7 @@ export class PwContainerDirectiveOutputCaller {
 
 @Directive({
   selector: '[pw-container]',
-  providers: [CommandInvokerRegister, ContainerStateHandler, ContainerOutState, ContainerInState, TryConsumeSuppliedElementStrategy, PwContainerDirectiveOutputCaller, ReorderElementsStrategy, ReorderElementsOnMovingUpStrategy, ReorderElementsOnMovingDownStrategy, ResetElementsOnMovingStrategy, TryNotifyClientStrategy]
+  providers: [CommandInvokerRegister, ContainerStateHandler, ContainerOutState, ContainerInState, TryConsumeSuppliedElementStrategy, PwContainerDirectiveOutputCaller, ReorderElementsStrategy, ReorderElementsOnMovingUpStrategy, ReorderElementsOnMovingDownStrategy, ResetElementsOnMovingStrategy, TryNotifyClientStrategy, AdjustMovingElementPositionStrategy]
 })
 export class PwContainerDirective implements IObserver {
 
