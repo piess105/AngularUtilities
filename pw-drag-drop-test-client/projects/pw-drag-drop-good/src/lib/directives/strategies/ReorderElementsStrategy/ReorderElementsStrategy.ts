@@ -2,6 +2,7 @@ import { ElementRef, Injectable, Renderer2 } from "@angular/core";
 import { CallOnce } from "../../common/helpers/CallOnce";
 import { CollisionChecker } from "../../common/helpers/CollisionChecker";
 import { DirectionType, MovingDirectionDeterminerNotifiesWhenDirectionChange } from "../../common/helpers/MovingDirectionDeterminer";
+import { DirectiveType } from "../../enums/DirectiveType";
 import { IObserver } from "../../interfaces/IObserver";
 import { MouseListenerBetter } from "../../listeners/MouseListener";
 import { ElementWithReference } from "../../observables/ElementMoverObservable";
@@ -25,7 +26,7 @@ export class ReorderElementsStrategy implements IObserver {
         private collisonChecker: CollisionChecker,
         private adjustMovingElementPositionStrategy: AdjustMovingElementPositionStrategy,
         private tryNotifyClientStrategy: TryNotifyClientStrategy,
-        private resetElementsOnMovingStrategy: ResetElementsOnMovingStrategy,
+        private resetElementsOnMovingOutsideParentStrategy: ResetElementsOnMovingStrategy,
         private reorderElementsOnMovingDownStrategy: ReorderElementsOnMovingDownStrategy,
         private reorderElementsOnMovingUpStrategy: ReorderElementsOnMovingUpStrategy,
         private renderer: Renderer2,
@@ -68,11 +69,11 @@ export class ReorderElementsStrategy implements IObserver {
             }
         }
         else {
-            this.resetElementsOnMovingStrategy.execute(model);
+            this.resetElementsOnMovingOutsideParentStrategy.execute(model);
         }
     }
 
-    private getMovingElementDirection = (movingElement: Element) => {
+    private getMovingElementDirection = (movingElement: Element) : DirectionType  => {
 
         var movingDirection = this._movingDirectionDeterminer.determine(this.getElementTransformY(movingElement));
 

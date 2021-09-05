@@ -16,14 +16,14 @@ export class ReorderElementsOnMovingUpStrategy extends ReorderElementsOnMovingSt
 
         var elements = this.getElementsBelowMovingOne(model.element, movingElementStartingPosition);
 
-        elements  = this.excludeElementsToPreventDoubleMove(elements, model.element);
+        elements = this.excludeElementsToPreventDoubleMove(elements, model.element);
 
-        this.decreaseNewMovingElementIndexAttribute(model.element, elements);
+        this.decreaseMovingElementNewIndexAttribute(model.element, elements);
 
         this.moveElementsDown(elements);
     }
 
-    private decreaseNewMovingElementIndexAttribute = (movingElement: Element, elements: Element[]) => {
+    private decreaseMovingElementNewIndexAttribute = (movingElement: Element, elements: Element[]) => {
 
         this.setMovingElementNewIndexAttrbute(movingElement, (prevValue) => prevValue - elements.length);
     };
@@ -82,6 +82,6 @@ export class ReorderElementsOnMovingUpStrategy extends ReorderElementsOnMovingSt
         return res;
     };
 
-  
+
 
 }

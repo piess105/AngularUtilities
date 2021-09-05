@@ -20,10 +20,10 @@ export class ReorderElementsOnMovingDownStrategy extends ReorderElementsOnMoving
 
         this.moveElementsUp(elements);
 
-        this.increaseNewMovingElementIndexAttribute(model.element, elements);
+        this.increaseMovingElementNewIndexAttribute(model.element, elements);
     }
 
-    private increaseNewMovingElementIndexAttribute = (movingElement: Element, elements: Element[]) => {
+    private increaseMovingElementNewIndexAttribute = (movingElement: Element, elements: Element[]) => {
 
         this.setMovingElementNewIndexAttrbute(movingElement, (prevValue) => prevValue + elements.length);
     };
