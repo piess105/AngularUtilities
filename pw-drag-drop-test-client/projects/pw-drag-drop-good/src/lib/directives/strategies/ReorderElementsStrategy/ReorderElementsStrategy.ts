@@ -1,21 +1,27 @@
 import { ElementRef, Injectable, Renderer2 } from "@angular/core";
 import { CallOnce } from "../../common/helpers/CallOnce";
+import { CollisionChecker } from "../../common/helpers/CollisionChecker";
 import { DirectionType, MovingDirectionDeterminerObservable } from "../../common/helpers/MovingDirectionDeterminer";
 import { IObserver } from "../../interfaces/IObserver";
 import { ElementWithReference } from "../../observables/ElementMoverObservable";
+import { ReorderElementsOnMovingStrategyBase } from "./ReodrerElementsOnMovingStrategyBase";
 import { ReorderElementsOnMovingDownStrategy } from "./ReorderElementsOnMovingDownStrategy";
 import { ReorderElementsOnMovingUpStrategy } from "./ReorderElementsOnMovingUpStrategy";
+import { ResetElementsOnMovingStrategy } from "./ResetElementsOnMovingStrategy";
 
 @Injectable()
 export class ReorderElementsStrategy implements IObserver {
 
     private movingElementStartingPosition: number = 0;
     private _movingElementReference!: ElementWithReference;
+    private callOnce: CallOnce = new CallOnce();
 
     private movingDirectionDeterminer: MovingDirectionDeterminerObservable = new MovingDirectionDeterminerObservable();
 
     constructor(
-        private reorderElementsOnMovingDownStrategy : ReorderElementsOnMovingDownStrategy,
+        private collisonChecker: CollisionChecker,
+        private resetElementsOnMovingStrategy: ResetElementsOnMovingStrategy,
+        private reorderElementsOnMovingDownStrategy: ReorderElementsOnMovingDownStrategy,
         private reorderElementsOnMovingUpStrategy: ReorderElementsOnMovingUpStrategy,
         private renderer: Renderer2,
         private element: ElementRef) {
@@ -32,17 +38,39 @@ export class ReorderElementsStrategy implements IObserver {
 
         this.saveMovingElementReference(model);
 
-        var movingDirection = this.movingDirectionDeterminer.determine(this.getElementTransformY(model.element));
+        if (this.isMovingElementInsideParent()) {
 
-        if (movingDirection == DirectionType.Up) {
+            var movingElementDirection = this.getMovingElementDirection(model.element);
 
-            this.reorderElementsOnMovingUpStrategy.execute(model, this.movingElementStartingPosition);
+            if (movingElementDirection == DirectionType.Up) {
+
+                this.reorderElementsOnMovingUpStrategy.execute(model, this.movingElementStartingPosition);
+            }
+            else if (movingElementDirection == DirectionType.Down) {
+
+                this.reorderElementsOnMovingDownStrategy.execute(model, this.movingElementStartingPosition);
+            }
         }
-        else if (movingDirection == DirectionType.Down) {
-            
-            this.reorderElementsOnMovingDownStrategy.execute(model, this.movingElementStartingPosition);
+        else {
+            this.resetElementsOnMovingStrategy.execute(model);
         }
+
     }
+
+    private getMovingElementDirection = (movingElement : Element) => {
+
+        var movingDirection = this.movingDirectionDeterminer.determine(this.getElementTransformY(movingElement));
+
+        return movingDirection;
+    }
+
+    private isMovingElementInsideParent = (): boolean => {
+
+        var isColliding = this.collisonChecker.collides(this._movingElementReference.element.getBoundingClientRect(), this.element.nativeElement.getBoundingClientRect());
+
+        return isColliding;
+    }
+
 
     private refreshMovingElementPosition = () => {
 

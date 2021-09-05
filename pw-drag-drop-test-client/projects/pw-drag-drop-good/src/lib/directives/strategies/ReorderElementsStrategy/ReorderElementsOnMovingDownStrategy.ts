@@ -23,7 +23,7 @@ export class ReorderElementsOnMovingDownStrategy extends ReorderElementsOnMoving
         this.increaseNewMovingElementIndexAttribute(model.element, elements);
     }
 
-    protected increaseNewMovingElementIndexAttribute = (movingElement: Element, elements: Element[]) => {
+    private increaseNewMovingElementIndexAttribute = (movingElement: Element, elements: Element[]) => {
 
         this.setMovingElementNewIndexAttrbute(movingElement, (prevValue) => prevValue + elements.length);
     };

@@ -3,7 +3,7 @@ import { ElementWithReference } from "../../observables/ElementMoverObservable";
 
 export abstract class ReorderElementsOnMovingStrategyBase {
 
-    protected NEW_INDEX_ATTRIBUTE_NAME = "new_index";
+    public static NEW_INDEX_ATTRIBUTE_NAME = "new_index";
 
     constructor(
         protected renderer: Renderer2,
@@ -14,22 +14,29 @@ export abstract class ReorderElementsOnMovingStrategyBase {
 
     abstract execute(model: ElementWithReference, movingElementStartingPosition: number): void;
 
-    protected getMovingElementNewIndexValue = (movingElement: Element) => {
+    protected getMovingElementNewIndexValue = (movingElement: Element): number | undefined => {
 
-        return parseInt(movingElement.getAttribute(this.NEW_INDEX_ATTRIBUTE_NAME)!);
+        if (movingElement.getAttribute(ReorderElementsOnMovingStrategyBase.NEW_INDEX_ATTRIBUTE_NAME) == null)
+            return undefined;
+
+        return parseInt(movingElement.getAttribute(ReorderElementsOnMovingStrategyBase.NEW_INDEX_ATTRIBUTE_NAME)!);
     }
 
     protected setMovingElementNewIndexAttrbute = (movingElement: Element, predicate: (prevValue: number) => number) => {
 
-        if (!movingElement.hasAttribute(this.NEW_INDEX_ATTRIBUTE_NAME)) {
-            this.renderer.setAttribute(movingElement, this.NEW_INDEX_ATTRIBUTE_NAME, this.getElementIndex(movingElement).toString());
+        if (!movingElement.hasAttribute(ReorderElementsOnMovingStrategyBase.NEW_INDEX_ATTRIBUTE_NAME)) {
+            this.renderer.setAttribute(movingElement, ReorderElementsOnMovingStrategyBase.NEW_INDEX_ATTRIBUTE_NAME, this.getElementIndex(movingElement).toString());
         }
 
-        var prevValue = parseInt(movingElement.getAttribute(this.NEW_INDEX_ATTRIBUTE_NAME)!);
+        var prevValue = parseInt(movingElement.getAttribute(ReorderElementsOnMovingStrategyBase.NEW_INDEX_ATTRIBUTE_NAME)!);
 
         prevValue = predicate(prevValue);
 
-        this.renderer.setAttribute(movingElement, this.NEW_INDEX_ATTRIBUTE_NAME, prevValue.toString());
+        this.renderer.setAttribute(movingElement, ReorderElementsOnMovingStrategyBase.NEW_INDEX_ATTRIBUTE_NAME, prevValue.toString());
+    }
+
+    protected removeMovingElementNewIndexAttribute = (movingElement: Element) => {
+        this.renderer.removeAttribute(movingElement, ReorderElementsOnMovingStrategyBase.NEW_INDEX_ATTRIBUTE_NAME);
     }
 
     protected getElementIndex = (element: Element): number => {

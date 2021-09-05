@@ -85,6 +85,7 @@
     border: 1px solid black;
 
     &__item{
+      display: table;
       margin: 10px 0;
     }
   }

@@ -13,6 +13,7 @@ import { DirectiveStateRegister } from './states/DirectiveStateChanger';
 import { ReorderElementsOnMovingDownStrategy } from './strategies/ReorderElementsStrategy/ReorderElementsOnMovingDownStrategy';
 import { ReorderElementsOnMovingUpStrategy } from './strategies/ReorderElementsStrategy/ReorderElementsOnMovingUpStrategy';
 import { ReorderElementsStrategy } from './strategies/ReorderElementsStrategy/ReorderElementsStrategy';
+import { ResetElementsOnMovingStrategy } from './strategies/ReorderElementsStrategy/ResetElementsOnMovingStrategy';
 import { TryConsumeSuppliedElementStrategy } from './strategies/TryConsumeElementStrategy';
 
 
@@ -40,7 +41,7 @@ export class PwContainerDirectiveOutputCaller {
 
 @Directive({
   selector: '[pw-container]',
-  providers: [CommandInvokerRegister, ContainerStateHandler, ContainerOutState, ContainerInState, TryConsumeSuppliedElementStrategy, PwContainerDirectiveOutputCaller, ReorderElementsStrategy, ReorderElementsOnMovingUpStrategy, ReorderElementsOnMovingDownStrategy]
+  providers: [CommandInvokerRegister, ContainerStateHandler, ContainerOutState, ContainerInState, TryConsumeSuppliedElementStrategy, PwContainerDirectiveOutputCaller, ReorderElementsStrategy, ReorderElementsOnMovingUpStrategy, ReorderElementsOnMovingDownStrategy, ResetElementsOnMovingStrategy]
 })
 export class PwContainerDirective implements IObserver {
 

@@ -23,7 +23,7 @@ export class ReorderElementsOnMovingUpStrategy extends ReorderElementsOnMovingSt
         this.moveElementsDown(elements);
     }
 
-    protected decreaseNewMovingElementIndexAttribute = (movingElement: Element, elements: Element[]) => {
+    private decreaseNewMovingElementIndexAttribute = (movingElement: Element, elements: Element[]) => {
 
         this.setMovingElementNewIndexAttrbute(movingElement, (prevValue) => prevValue - elements.length);
     };
