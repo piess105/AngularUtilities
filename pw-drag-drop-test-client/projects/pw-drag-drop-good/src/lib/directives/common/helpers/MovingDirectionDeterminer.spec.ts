@@ -1,5 +1,5 @@
 import { IObserver } from "../../interfaces/IObserver";
-import { DirectionType, MovingDirectionDeterminer, MovingDirectionDeterminerObservable } from "./MovingDirectionDeterminer";
+import { DirectionType, MovingDirectionDeterminer, MovingDirectionDeterminerNotifiesWhenDirectionChange } from "./MovingDirectionDeterminer";
 
 describe('MovingDirectionDeterminer', () => {
 
@@ -58,7 +58,7 @@ describe('MovingDirectionDeterminer', () => {
 
 });
 
-describe('MovingDirectionDeterminerObservable', () => {
+describe('MovingDirectionDeterminerNotifiesWhenDirectionChange', () => {
 
     it('determine', () => {
 
@@ -86,7 +86,7 @@ describe('MovingDirectionDeterminerObservable', () => {
 
             var callCount = 0;
 
-            var determiner = new MovingDirectionDeterminerObservable();
+            var determiner = new MovingDirectionDeterminerNotifiesWhenDirectionChange();
             determiner.subscribe(new ObserverTestClass(() => {
                 callCount++;
 

@@ -40,9 +40,9 @@ export class MovingDirectionDeterminer implements IMovingDirectionDeterminer {
     }
 }
 
-export class MovingDirectionDeterminerObservable extends ObservableBase implements IMovingDirectionDeterminer {
+export class MovingDirectionDeterminerNotifiesWhenDirectionChange extends ObservableBase implements IMovingDirectionDeterminer {
 
-    private prevDirectionType: DirectionType = DirectionType.Unknown;
+    private prevDirection: DirectionType = DirectionType.Unknown;
 
     constructor(private determiner: MovingDirectionDeterminer = new MovingDirectionDeterminer()) {
         super()
@@ -50,15 +50,15 @@ export class MovingDirectionDeterminerObservable extends ObservableBase implemen
 
     determine(value: number): DirectionType {
 
-        var determine = this.determiner.determine(value);
+        var currentDirection = this.determiner.determine(value);
 
-        if (this.prevDirectionType != determine) {
+        if (this.prevDirection != currentDirection) {
 
-            this.prevDirectionType = determine;
-            this.notify(determine);
+            this.prevDirection = currentDirection;
+            this.notify(currentDirection);
         }
 
-        return determine;
+        return currentDirection;
     }
 
 

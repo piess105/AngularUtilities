@@ -14,6 +14,7 @@ import { ReorderElementsOnMovingDownStrategy } from './strategies/ReorderElement
 import { ReorderElementsOnMovingUpStrategy } from './strategies/ReorderElementsStrategy/ReorderElementsOnMovingUpStrategy';
 import { ReorderElementsStrategy } from './strategies/ReorderElementsStrategy/ReorderElementsStrategy';
 import { ResetElementsOnMovingStrategy } from './strategies/ReorderElementsStrategy/ResetElementsOnMovingStrategy';
+import { TryNotifyClientStrategy } from './strategies/ReorderElementsStrategy/TryNotifyClientStrategy';
 import { TryConsumeSuppliedElementStrategy } from './strategies/TryConsumeElementStrategy';
 
 
@@ -41,7 +42,7 @@ export class PwContainerDirectiveOutputCaller {
 
 @Directive({
   selector: '[pw-container]',
-  providers: [CommandInvokerRegister, ContainerStateHandler, ContainerOutState, ContainerInState, TryConsumeSuppliedElementStrategy, PwContainerDirectiveOutputCaller, ReorderElementsStrategy, ReorderElementsOnMovingUpStrategy, ReorderElementsOnMovingDownStrategy, ResetElementsOnMovingStrategy]
+  providers: [CommandInvokerRegister, ContainerStateHandler, ContainerOutState, ContainerInState, TryConsumeSuppliedElementStrategy, PwContainerDirectiveOutputCaller, ReorderElementsStrategy, ReorderElementsOnMovingUpStrategy, ReorderElementsOnMovingDownStrategy, ResetElementsOnMovingStrategy, TryNotifyClientStrategy]
 })
 export class PwContainerDirective implements IObserver {
 
