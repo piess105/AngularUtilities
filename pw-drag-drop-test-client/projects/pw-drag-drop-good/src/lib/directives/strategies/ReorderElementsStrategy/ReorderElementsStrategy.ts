@@ -10,23 +10,25 @@ import { AdjustMovingElementPositionStrategy } from "./AdjustMovingElementPositi
 import { ReorderElementsOnMovingStrategyBase } from "./ReodrerElementsOnMovingStrategyBase";
 import { ReorderElementsOnMovingDownStrategy } from "./ReorderElementsOnMovingDownStrategy";
 import { ReorderElementsOnMovingUpStrategy } from "./ReorderElementsOnMovingUpStrategy";
-import { ResetElementsOnMovingStrategy } from "./ResetElementsOnMovingStrategy";
+import { TryResetNoneMovingElementsTransformsAndRemoveNewIndexAttributeStrategy } from "./TryResetNoneMovingElementsTransformsAndRemoveNewIndexAttributeStrategy";
 import { TryNotifyClientStrategy } from "./TryNotifyClientStrategy";
+import { RemoveMovingElementRemindersStrategy } from "./RemoveMovingElementRemindersStrategy";
 
 @Injectable()
 export class ReorderElementsStrategy implements IObserver {
 
     private _movingElementStartingPosition: number = 0;
-    private _movingElementReference!: ElementWithReference;
+    private _movingElementReference?: ElementWithReference;
 
     private _movingDirectionDeterminer: MovingDirectionDeterminerNotifiesWhenDirectionChange = new MovingDirectionDeterminerNotifiesWhenDirectionChange();
 
     constructor(
         mouseListener: MouseListenerBetter,
         private collisonChecker: CollisionChecker,
+        private removeMovingElementRemindersStrategy: RemoveMovingElementRemindersStrategy,
         private adjustMovingElementPositionStrategy: AdjustMovingElementPositionStrategy,
         private tryNotifyClientStrategy: TryNotifyClientStrategy,
-        private resetElementsOnMovingOutsideParentStrategy: ResetElementsOnMovingStrategy,
+        private tryResetNoneMovingElementsTransformsAndRemoveNewIndexAttributeStrategy: TryResetNoneMovingElementsTransformsAndRemoveNewIndexAttributeStrategy,
         private reorderElementsOnMovingDownStrategy: ReorderElementsOnMovingDownStrategy,
         private reorderElementsOnMovingUpStrategy: ReorderElementsOnMovingUpStrategy,
         private renderer: Renderer2,
@@ -37,13 +39,16 @@ export class ReorderElementsStrategy implements IObserver {
         mouseListener.mouseUp.subscribe(x => this.onMouseUp(x));
     }
 
-    onMouseUp(event: MouseEvent): void {
+    private onMouseUp(event: MouseEvent): void {
 
         if (this._movingElementReference == undefined)
             return;
 
         this.adjustMovingElementPositionStrategy.execute(this._movingElementReference, this._movingElementStartingPosition);
         this.tryNotifyClientStrategy.execute(this._movingElementReference);
+        this.removeMovingElementRemindersStrategy.execute(this._movingElementReference);
+
+        this.removeMovingElementReference();
     }
 
     notified(type: DirectionType): void {
@@ -69,11 +74,15 @@ export class ReorderElementsStrategy implements IObserver {
             }
         }
         else {
-            this.resetElementsOnMovingOutsideParentStrategy.execute(model);
+            this.tryResetNoneMovingElementsTransformsAndRemoveNewIndexAttributeStrategy.execute(model);
         }
     }
 
-    private getMovingElementDirection = (movingElement: Element) : DirectionType  => {
+    private removeMovingElementReference = () => {
+        this._movingElementReference = undefined;
+    }
+
+    private getMovingElementDirection = (movingElement: Element): DirectionType => {
 
         var movingDirection = this._movingDirectionDeterminer.determine(this.getElementTransformY(movingElement));
 
@@ -82,7 +91,7 @@ export class ReorderElementsStrategy implements IObserver {
 
     private isMovingElementInsideParent = (): boolean => {
 
-        var isColliding = this.collisonChecker.collides(this._movingElementReference.element.getBoundingClientRect(), this.element.nativeElement.getBoundingClientRect());
+        var isColliding = this.collisonChecker.collides(this._movingElementReference!.element.getBoundingClientRect(), this.element.nativeElement.getBoundingClientRect());
 
         return isColliding;
     }
@@ -90,7 +99,7 @@ export class ReorderElementsStrategy implements IObserver {
 
     private refreshMovingElementPosition = () => {
 
-        this._movingElementStartingPosition = this.getElementCenter(this._movingElementReference.element);
+        this._movingElementStartingPosition = this.getElementCenter(this._movingElementReference!.element);
     }
 
     private saveMovingElementReference = (model: ElementWithReference) => {

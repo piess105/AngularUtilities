@@ -17,7 +17,6 @@ export class TryNotifyClientStrategy extends ReorderElementsOnMovingStrategyBase
 
 
 
-
     }
 
     private canNotify = (): boolean => {

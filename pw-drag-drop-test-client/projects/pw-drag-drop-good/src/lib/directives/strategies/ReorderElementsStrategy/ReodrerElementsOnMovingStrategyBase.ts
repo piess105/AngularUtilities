@@ -36,6 +36,7 @@ export abstract class ReorderElementsOnMovingStrategyBase {
     }
 
     protected removeMovingElementNewIndexAttribute = (movingElement: Element) => {
+        console.log("KUPA");
         this.renderer.removeAttribute(movingElement, ReorderElementsOnMovingStrategyBase.NEW_INDEX_ATTRIBUTE_NAME);
     }
 

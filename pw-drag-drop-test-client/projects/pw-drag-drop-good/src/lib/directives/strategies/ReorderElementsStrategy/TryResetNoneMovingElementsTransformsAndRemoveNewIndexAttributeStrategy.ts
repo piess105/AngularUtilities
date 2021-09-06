@@ -3,7 +3,7 @@ import { ElementWithReference } from "../../observables/ElementMoverObservable";
 import { ReorderElementsOnMovingStrategyBase } from "./ReodrerElementsOnMovingStrategyBase";
 
 @Injectable()
-export class ResetElementsOnMovingStrategy extends ReorderElementsOnMovingStrategyBase {
+export class TryResetNoneMovingElementsTransformsAndRemoveNewIndexAttributeStrategy extends ReorderElementsOnMovingStrategyBase {
 
     constructor(
         renderer: Renderer2,
@@ -13,7 +13,7 @@ export class ResetElementsOnMovingStrategy extends ReorderElementsOnMovingStrate
     }
 
     execute(model: ElementWithReference): void {
-
+        
         if (!this.canElementsBeReset(model.element))
             return;
 
@@ -23,7 +23,7 @@ export class ResetElementsOnMovingStrategy extends ReorderElementsOnMovingStrate
     private canElementsBeReset = (movingElement: Element): boolean => {
 
         var index = this.getMovingElementNewIndexValue(movingElement);
-
+       
         if (index != undefined)
             return true;
 
