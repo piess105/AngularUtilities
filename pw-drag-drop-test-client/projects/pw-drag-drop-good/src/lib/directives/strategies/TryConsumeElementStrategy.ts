@@ -3,7 +3,7 @@ import { CallOnce } from "../common/helpers/CallOnce";
 import { MouseListenerBetter } from "../listeners/MouseListener";
 import { MousePosition } from "../models/MousePosition";
 import { ElementWithReference } from "../observables/ElementMoverObservable";
-import { PwContainerDirectiveOutputCaller } from "../pw-container.directive";
+import { PwContainerDirectiveOutputsCaller } from "../pw-container.directive";
 
 @Injectable()
 export class TryConsumeSuppliedElementStrategy {
@@ -12,7 +12,7 @@ export class TryConsumeSuppliedElementStrategy {
     private _suppliedElementReference?: ElementWithReference;
 
     constructor(
-        private directiveOutputCalled : PwContainerDirectiveOutputCaller,
+        private directiveOutputCalled : PwContainerDirectiveOutputsCaller,
         private mouseListener: MouseListenerBetter,
         private mousePosition: MousePosition,
         private element: ElementRef,
@@ -67,7 +67,7 @@ export class TryConsumeSuppliedElementStrategy {
         
         this.renderer.setStyle(this._suppliedElementReference?.element, "opacity", "0");
 
-        this.directiveOutputCalled.callAddElementCalled(this._suppliedElementReference?.reference);      
+        this.directiveOutputCalled.addElementCalled.call(this._suppliedElementReference?.reference);      
         
         this.undoChangeTheElementBorderColor();
         this.removeSuppliedElementReference();

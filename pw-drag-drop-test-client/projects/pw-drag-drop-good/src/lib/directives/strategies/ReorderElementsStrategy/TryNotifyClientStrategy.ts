@@ -1,12 +1,18 @@
 import { ElementRef, Injectable, Renderer2 } from "@angular/core";
 import { ElementWithReference } from "../../observables/ElementMoverObservable";
+import { PwContainerDirectiveOutputsCaller } from "../../pw-container.directive";
 import { ReorderElementsOnMovingStrategyBase } from "./ReodrerElementsOnMovingStrategyBase";
 
+export class UpdateModel {
+    item!: any;
+    newIndex!: number;
+}
 
 @Injectable()
 export class TryNotifyClientStrategy extends ReorderElementsOnMovingStrategyBase {
 
     constructor(
+        private outputsCaller: PwContainerDirectiveOutputsCaller,
         renderer: Renderer2,
         element: ElementRef
     ) {
@@ -17,32 +23,31 @@ export class TryNotifyClientStrategy extends ReorderElementsOnMovingStrategyBase
 
         if (!this.canNotify(model.element))
             return;
-        console.log("HI");
+
+        this.notifyClient(model);
+    }
+
+    private notifyClient = (model: ElementWithReference) => {
+
+        var newIndex = this.getMovingElementNewIndexValue(model.element);
+
+        this.outputsCaller.updateElementCalled.call(<UpdateModel>{ item: model.reference, newIndex: newIndex });
     }
 
     private canNotify = (movingElement: Element): boolean => {
 
-        if (!this.hasMovingElementSwopWithOtherElemnent(movingElement))
-            return false;
-
-        if (!this.isMovingElementInsideParentElement(movingElement))
+        if (!this.hasMovingElementNewIndexAttributeAssigned(movingElement))
             return false;
 
 
         return true;
     }
 
-    private hasMovingElementSwopWithOtherElemnent = (movingElement: Element): boolean => {
+    private hasMovingElementNewIndexAttributeAssigned = (movingElement: Element): boolean => {
 
         var newIndex = this.getMovingElementNewIndexValue(movingElement);
 
         return newIndex != undefined;
-    }
-
-    private isMovingElementInsideParentElement = (movingElement: Element): boolean => {
-
-
-        return true;
     }
 
 

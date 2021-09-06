@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { UpdateModel } from 'projects/pw-drag-drop-good/src/lib/directives/strategies/ReorderElementsStrategy/TryNotifyClientStrategy';
 
 @Component({
   selector: 'app-root',
@@ -24,5 +25,19 @@ export class AppComponent {
 
     this.containerItems.push({ name: item.name });
   }
+
+  onUpdateElementCalled(item: UpdateModel) {
+    console.log(item.item);
+
+    var oldIndex  = this.containerItems.indexOf(item.item);
+    var newIndex = item.newIndex;
+
+    this.containerItems.splice(oldIndex, 1);
+    this.containerItems.splice(newIndex, 0, item.item);
+
+    console.log(oldIndex);
+  }
+
+  
 
 }

@@ -3,7 +3,7 @@ import { ElementWithReference } from "../../observables/ElementMoverObservable";
 import { ReorderElementsOnMovingStrategyBase } from "./ReodrerElementsOnMovingStrategyBase";
 
 @Injectable()
-export class RemoveMovingElementRemindersStrategy extends ReorderElementsOnMovingStrategyBase {
+export class RemoveElementsRemindersStrategy extends ReorderElementsOnMovingStrategyBase {
     constructor(
         renderer: Renderer2,
         element: ElementRef
@@ -15,6 +15,20 @@ export class RemoveMovingElementRemindersStrategy extends ReorderElementsOnMovin
 
         this.removeMovingElementNewIndexAttribute(model.element);
         
+        this.removeChildrenTransforms();
+       
     }
+
+    private removeChildrenTransforms = () => {
+
+        var children = this.getAllChildren();
+
+        children.forEach(child => {
+            
+            this.renderer.removeStyle(child, "transform");
+        });
+
+    }
+
 
 }

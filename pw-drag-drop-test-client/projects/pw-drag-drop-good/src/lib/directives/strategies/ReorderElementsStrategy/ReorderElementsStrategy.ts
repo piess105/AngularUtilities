@@ -12,7 +12,7 @@ import { ReorderElementsOnMovingDownStrategy } from "./ReorderElementsOnMovingDo
 import { ReorderElementsOnMovingUpStrategy } from "./ReorderElementsOnMovingUpStrategy";
 import { TryResetNoneMovingElementsTransformsAndRemoveNewIndexAttributeStrategy } from "./TryResetNoneMovingElementsTransformsAndRemoveNewIndexAttributeStrategy";
 import { TryNotifyClientStrategy } from "./TryNotifyClientStrategy";
-import { RemoveMovingElementRemindersStrategy } from "./RemoveMovingElementRemindersStrategy";
+import { RemoveElementsRemindersStrategy } from "./RemoveElementsRemindersStrategy";
 
 @Injectable()
 export class ReorderElementsStrategy implements IObserver {
@@ -25,7 +25,7 @@ export class ReorderElementsStrategy implements IObserver {
     constructor(
         mouseListener: MouseListenerBetter,
         private collisonChecker: CollisionChecker,
-        private removeMovingElementRemindersStrategy: RemoveMovingElementRemindersStrategy,
+        private removeMovingElementRemindersStrategy: RemoveElementsRemindersStrategy,
         private adjustMovingElementPositionStrategy: AdjustMovingElementPositionStrategy,
         private tryNotifyClientStrategy: TryNotifyClientStrategy,
         private tryResetNoneMovingElementsTransformsAndRemoveNewIndexAttributeStrategy: TryResetNoneMovingElementsTransformsAndRemoveNewIndexAttributeStrategy,

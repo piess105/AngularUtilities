@@ -17,48 +17,38 @@ import { ReorderElementsStrategy } from './strategies/ReorderElementsStrategy/Re
 import { TryResetNoneMovingElementsTransformsAndRemoveNewIndexAttributeStrategy } from './strategies/ReorderElementsStrategy/TryResetNoneMovingElementsTransformsAndRemoveNewIndexAttributeStrategy';
 import { TryNotifyClientStrategy } from './strategies/ReorderElementsStrategy/TryNotifyClientStrategy';
 import { TryConsumeSuppliedElementStrategy } from './strategies/TryConsumeElementStrategy';
-import { RemoveMovingElementRemindersStrategy } from './strategies/ReorderElementsStrategy/RemoveMovingElementRemindersStrategy';
+import { RemoveElementsRemindersStrategy } from './strategies/ReorderElementsStrategy/RemoveElementsRemindersStrategy';
+import { EventEmitterSetterCaller } from './common/helpers/EventEmitterSetterCaller';
 
 
 @Injectable()
-export class PwContainerDirectiveOutputCaller {
+export class PwContainerDirectiveOutputsCaller {
 
-  private _addElementCalled?: (item: any) => void;
-
-  setAddElementCalled(emitter: EventEmitter<any>) {
-
-    if (this._addElementCalled != undefined)
-      return;
-
-    this._addElementCalled = (item) => emitter.emit(item);
-  }
-
-  callAddElementCalled(item: any) {
-
-    if (this._addElementCalled == undefined)
-      throw new Error("_addElementCalled has not been set use: setAddElementCalled method to set");
-
-    this._addElementCalled(item);
-  }
+  public addElementCalled: EventEmitterSetterCaller<any> = new EventEmitterSetterCaller();
+  public updateElementCalled: EventEmitterSetterCaller<any> = new EventEmitterSetterCaller();
 }
+
+
 
 @Directive({
   selector: '[pw-container]',
-  providers: [CommandInvokerRegister, ContainerStateHandler, ContainerOutState, ContainerInState, TryConsumeSuppliedElementStrategy, PwContainerDirectiveOutputCaller, ReorderElementsStrategy, ReorderElementsOnMovingUpStrategy, ReorderElementsOnMovingDownStrategy, TryResetNoneMovingElementsTransformsAndRemoveNewIndexAttributeStrategy, TryNotifyClientStrategy, AdjustMovingElementPositionStrategy, RemoveMovingElementRemindersStrategy]
+  providers: [CommandInvokerRegister, ContainerStateHandler, ContainerOutState, ContainerInState, TryConsumeSuppliedElementStrategy, PwContainerDirectiveOutputsCaller, ReorderElementsStrategy, ReorderElementsOnMovingUpStrategy, ReorderElementsOnMovingDownStrategy, TryResetNoneMovingElementsTransformsAndRemoveNewIndexAttributeStrategy, TryNotifyClientStrategy, AdjustMovingElementPositionStrategy, RemoveElementsRemindersStrategy]
 })
 export class PwContainerDirective implements IObserver {
 
   @Output() addElementCalled: EventEmitter<any> = new EventEmitter();
+  @Output() updateElementCalled: EventEmitter<any> = new EventEmitter();
 
   constructor(
-    private outputCaller : PwContainerDirectiveOutputCaller,
+    private outputsCaller: PwContainerDirectiveOutputsCaller,
     private strategy: ReorderElementsStrategy,
     globalElementMovement: GlobalElementMovementObservable
 
   ) {
     globalElementMovement.subscribe(this);
 
-    this.outputCaller.setAddElementCalled(this.addElementCalled);
+    this.outputsCaller.addElementCalled.set(this.addElementCalled);
+    this.outputsCaller.updateElementCalled.set(this.updateElementCalled);
   }
 
 
