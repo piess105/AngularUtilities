@@ -25,7 +25,7 @@ export class ReorderElementsOnMovingDownStrategy extends ReorderElementsOnMoving
 
     private increaseMovingElementNewIndexAttribute = (movingElement: Element, elements: Element[]) => {
 
-        this.setMovingElementNewIndexAttrbute(movingElement, (prevValue) => prevValue + elements.length);
+        this.setMovingElementNewIndexAttrbute_or_RemoveIfIsTheSameAsOriginal(movingElement, (prevValue) => prevValue + elements.length);
     };
 
     private excludeElementsToPreventDoubleMove = (elements: Element[], movingElement: Element): Element[] => {

@@ -53,7 +53,7 @@ export class ReorderElementsStrategy implements IObserver {
 
     notified(type: DirectionType): void {
 
-        this.refreshMovingElementPosition();
+        this.refreshMovingElementStartingPosition();
     }
 
     execute(model: ElementWithReference) {
@@ -62,19 +62,24 @@ export class ReorderElementsStrategy implements IObserver {
 
         if (this.isMovingElementInsideParent()) {
 
-            var movingElementDirection = this.getMovingElementDirection(model.element);
-
-            if (movingElementDirection == DirectionType.Up) {
-
-                this.reorderElementsOnMovingUpStrategy.execute(model, this._movingElementStartingPosition);
-            }
-            else if (movingElementDirection == DirectionType.Down) {
-
-                this.reorderElementsOnMovingDownStrategy.execute(model, this._movingElementStartingPosition);
-            }
+            this.doUpOrDownBehaviorDependingOnMovingElementDirection(model);
         }
         else {
             this.tryResetNoneMovingElementsTransformsAndRemoveNewIndexAttributeStrategy.execute(model);
+        }
+    }
+
+    private doUpOrDownBehaviorDependingOnMovingElementDirection = (model: ElementWithReference) => {
+
+        var movingElementDirection = this.getMovingElementDirection();
+
+        if (movingElementDirection == DirectionType.Up) {
+
+            this.reorderElementsOnMovingUpStrategy.execute(model, this._movingElementStartingPosition);
+        }
+        else if (movingElementDirection == DirectionType.Down) {
+
+            this.reorderElementsOnMovingDownStrategy.execute(model, this._movingElementStartingPosition);
         }
     }
 
@@ -82,9 +87,9 @@ export class ReorderElementsStrategy implements IObserver {
         this._movingElementReference = undefined;
     }
 
-    private getMovingElementDirection = (movingElement: Element): DirectionType => {
+    private getMovingElementDirection = (): DirectionType => {
 
-        var movingDirection = this._movingDirectionDeterminer.determine(this.getElementTransformY(movingElement));
+        var movingDirection = this._movingDirectionDeterminer.determine(this.getElementTransformY(this._movingElementReference?.element!));
 
         return movingDirection;
     }
@@ -97,7 +102,7 @@ export class ReorderElementsStrategy implements IObserver {
     }
 
 
-    private refreshMovingElementPosition = () => {
+    private refreshMovingElementStartingPosition = () => {
 
         this._movingElementStartingPosition = this.getElementCenter(this._movingElementReference!.element);
     }

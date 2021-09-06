@@ -22,7 +22,7 @@ export abstract class ReorderElementsOnMovingStrategyBase {
         return parseInt(movingElement.getAttribute(ReorderElementsOnMovingStrategyBase.NEW_INDEX_ATTRIBUTE_NAME)!);
     }
 
-    protected setMovingElementNewIndexAttrbute = (movingElement: Element, predicate: (prevValue: number) => number) => {
+    protected setMovingElementNewIndexAttrbute_or_RemoveIfIsTheSameAsOriginal = (movingElement: Element, predicate: (prevValue: number) => number) => {
 
         if (!movingElement.hasAttribute(ReorderElementsOnMovingStrategyBase.NEW_INDEX_ATTRIBUTE_NAME)) {
             this.renderer.setAttribute(movingElement, ReorderElementsOnMovingStrategyBase.NEW_INDEX_ATTRIBUTE_NAME, this.getElementIndex(movingElement).toString());
@@ -31,12 +31,20 @@ export abstract class ReorderElementsOnMovingStrategyBase {
         var prevValue = parseInt(movingElement.getAttribute(ReorderElementsOnMovingStrategyBase.NEW_INDEX_ATTRIBUTE_NAME)!);
 
         prevValue = predicate(prevValue);
+        var originalIndex = this.getElementIndex(movingElement);
+
+        if(prevValue == originalIndex){
+            this.removeMovingElementNewIndexAttribute(movingElement);
+            return;
+        }
 
         this.renderer.setAttribute(movingElement, ReorderElementsOnMovingStrategyBase.NEW_INDEX_ATTRIBUTE_NAME, prevValue.toString());
     }
 
+
+    
+
     protected removeMovingElementNewIndexAttribute = (movingElement: Element) => {
-        console.log("KUPA");
         this.renderer.removeAttribute(movingElement, ReorderElementsOnMovingStrategyBase.NEW_INDEX_ATTRIBUTE_NAME);
     }
 

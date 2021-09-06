@@ -26,9 +26,8 @@ export class AdjustMovingElementPositionStrategy extends ReorderElementsOnMoving
     private isMovingElementOutOfItsParent_Or_haventSwappedWithOtherElement = (movingElement: Element): boolean => {
 
         var newIndex = this.getMovingElementNewIndexValue(movingElement);
-        var originalIndex = this.getElementIndex(movingElement);
 
-        if (newIndex == undefined || newIndex == originalIndex)
+        if (newIndex == undefined)
             return true;
 
         return false;
