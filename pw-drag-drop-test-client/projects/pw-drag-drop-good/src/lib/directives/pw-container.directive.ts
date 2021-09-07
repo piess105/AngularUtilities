@@ -16,7 +16,7 @@ import { ReorderElementsOnMovingUpStrategy } from './strategies/ReorderElementsS
 import { ReorderElementsStrategy } from './strategies/ReorderElementsStrategy/ReorderElementsStrategy';
 import { TryResetNoneMovingElementsTransformsAndRemoveNewIndexAttributeStrategy } from './strategies/ReorderElementsStrategy/TryResetNoneMovingElementsTransformsAndRemoveNewIndexAttributeStrategy';
 import { TryNotifyClientStrategy } from './strategies/ReorderElementsStrategy/TryNotifyClientStrategy';
-import { TryConsumeSuppliedElementStrategy } from './strategies/TryConsumeElementStrategy';
+import { TryConsumeSuppliedElementStrategy } from './strategies/TryConsumeSuppliedElementStrategy';
 import { RemoveElementsRemindersStrategy } from './strategies/ReorderElementsStrategy/RemoveElementsRemindersStrategy';
 import { EventEmitterSetterCaller } from './common/helpers/EventEmitterSetterCaller';
 
@@ -40,8 +40,10 @@ export class PwContainerDirective implements IObserver {
   @Output() updateElementCalled: EventEmitter<any> = new EventEmitter();
 
   constructor(
+    private element: ElementRef,
     private outputsCaller: PwContainerDirectiveOutputsCaller,
-    private strategy: ReorderElementsStrategy,
+    private tryConsumeStrategy: TryConsumeSuppliedElementStrategy,
+    private reorderStrategy: ReorderElementsStrategy,
     globalElementMovement: GlobalElementMovementObservable
 
   ) {
@@ -53,7 +55,21 @@ export class PwContainerDirective implements IObserver {
 
 
   notified(element: ElementWithReference): void {
-    this.strategy.execute(element);
+
+    if (this.isMovingElementBelongingToTHISContainer(element.element)) {
+      this.reorderStrategy.execute(element);
+    }
+    else {
+      this.tryConsumeStrategy.execute(element);
+    }
+
+  }
+
+  private isMovingElementBelongingToTHISContainer = (element: Element): boolean => {
+
+    var parent = element.parentNode;
+
+    return parent == this.element.nativeElement;
   }
 
   ngAfterViewInit() {
