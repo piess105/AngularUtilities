@@ -1,4 +1,4 @@
-import { ObservableBase } from "../../observables/ObservableBase";
+import { ObservableBase, ObservableBaseGeneric } from "../../observables/ObservableBase";
 
 export enum DirectionType {
     Unknown,

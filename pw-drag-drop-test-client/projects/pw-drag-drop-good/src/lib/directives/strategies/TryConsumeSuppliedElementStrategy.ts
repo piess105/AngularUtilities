@@ -1,24 +1,32 @@
 import { ElementRef, Injectable, Renderer2 } from "@angular/core";
+import { Subscription } from "rxjs";
 import { CallOnce } from "../common/helpers/CallOnce";
+import { IDisposable } from "../interfaces/IDisposable";
 import { MouseListenerBetter } from "../listeners/MouseListener";
 import { MousePosition } from "../models/MousePosition";
 import { ElementWithReference } from "../observables/ElementMoverObservable";
 import { PwContainerDirectiveOutputsCaller } from "../pw-container.directive";
+import { ISomething } from "./ISomething";
 
 @Injectable()
-export class TryConsumeSuppliedElementStrategy {
+export class TryConsumeSuppliedElementStrategy implements ISomething {
 
     private callOnce: CallOnce = new CallOnce();
     private _suppliedElementReference?: ElementWithReference;
+    private subscription!: Subscription;
 
     constructor(
-        private directiveOutputCalled : PwContainerDirectiveOutputsCaller,
+        private directiveOutputCalled: PwContainerDirectiveOutputsCaller,
         private mouseListener: MouseListenerBetter,
         private mousePosition: MousePosition,
         private element: ElementRef,
         private renderer: Renderer2) {
 
-        this.mouseListener.mouseUp.subscribe(x => this.onMouseUp(x));
+        this.subscription = this.mouseListener.mouseUp.subscribe(x => this.onMouseUp(x));
+    }
+
+    dispose(): void {
+        this.subscription.unsubscribe();
     }
 
     execute(model: ElementWithReference) {
@@ -38,6 +46,7 @@ export class TryConsumeSuppliedElementStrategy {
     }
 
     private onMouseUp(event: MouseEvent) {
+        console.log("W PIZDE");
         if (this.hasSavedSuppliedElementReference()) {
 
             this.consumeSuppliedElement();
@@ -64,11 +73,11 @@ export class TryConsumeSuppliedElementStrategy {
     //#region Actions
 
     consumeSuppliedElement = () => {
-        
+
         this.renderer.setStyle(this._suppliedElementReference?.element, "opacity", "0");
 
-        this.directiveOutputCalled.addElementCalled.call(this._suppliedElementReference?.reference);      
-        
+        this.directiveOutputCalled.addElementCalled.call(this._suppliedElementReference?.reference);
+
         this.undoChangeTheElementBorderColor();
         this.removeSuppliedElementReference();
     }

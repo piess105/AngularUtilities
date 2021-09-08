@@ -31,7 +31,7 @@ describe('CallOnce', () => {
         cases.forEach(c => {
 
             var callOnce = new CallOnce();
-            //Increments the value on true, Decrement the value on false
+            //Increments the value on true, decrements the value on false
             c.conditions.forEach(condition => {
                 callOnce.Call(() => condition, () => c.valueToIncrement++, () => c.valueToIncrement--)
             });

@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { IObserver } from "../interfaces/IObserver";
-import { ObservableBase } from "./ObservableBase";
+import { ObservableBase, ObservableBaseGeneric } from "./ObservableBase";
 
 @Injectable({ providedIn: 'root' })
 export class GlobalElementMovementObservable extends ObservableBase implements IObserver {

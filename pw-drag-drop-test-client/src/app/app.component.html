@@ -10,12 +10,16 @@
           style="position: absolute; right: 10px; top: calc(50% - 5px); width: 10px; height: 10px; background-color: red;">
         </div>
 
+        <ul pw-container>
+          <li pw-drag-drop [reference]='item' style="display: block; margin-left: 5px;" *ngFor="let item of containerItems">{{item.name}}</li>
+        </ul>
+
       </li>
     </ul>
   </div>
 
-  <ul pw-container (addElementCalled)="onAddElementCalled($event)" (updateElementCalled)="onUpdateElementCalled($event)" class="containerek">
+  <!-- <ul pw-container (addElementCalled)="onAddElementCalled($event)" (updateElementCalled)="onUpdateElementCalled($event)" class="containerek">
     <li class="containerek__item" pw-drag-drop [reference]='item' *ngFor="let item of containerItems"> {{item.name}}</li>
-  </ul>
+  </ul> -->
 
 </div>

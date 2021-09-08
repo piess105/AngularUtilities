@@ -1,15 +1,13 @@
 import { IObservable, IObserver } from "../interfaces/IObserver";
 
+export abstract class ObservableBaseGeneric<T extends IObserver> implements IObservable {
 
+    protected observers: T[] = [];
 
-export abstract class ObservableBase implements IObservable {
-
-    private observers: IObserver[] = [];
-
-    subscribe(observer: IObserver): void {
+    subscribe(observer: T): void {
         this.observers.push(observer);
     }
-    unsubscribe(observer: IObserver): void {
+    unsubscribe(observer: T): void {
 
         var index = this.observers.indexOf(observer);
         this.observers.splice(index, 1);
@@ -21,4 +19,23 @@ export abstract class ObservableBase implements IObservable {
             observer.notified(obj);
         });
     }
+}
+
+export abstract class ObservableBase extends ObservableBaseGeneric<IObserver> {
+
+
+}
+
+
+
+
+export class ObserverAction implements IObserver {
+    constructor(private predicate: (item: any) => void) {
+
+    }
+
+    notified(obj: any): void {
+        this.predicate(obj);
+    }
+
 }

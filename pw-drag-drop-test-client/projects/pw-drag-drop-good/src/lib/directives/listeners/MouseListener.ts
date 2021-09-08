@@ -21,12 +21,18 @@ export class MouseListener implements IMouseListener {
 export class MouseListenerBetter {
 
     mouseUp: ReplaySubject<MouseEvent> = new ReplaySubject<MouseEvent>();
+    mouseMove: ReplaySubject<MouseEvent> = new ReplaySubject<MouseEvent>();
 
     constructor() {
 
         fromEvent(window, 'mouseup').subscribe(e => {
 
             this.mouseUp.next(e as MouseEvent);
+        });
+
+        fromEvent(window, 'mousemove').subscribe(e => {
+
+            this.mouseMove.next(e as MouseEvent);
         });
     }
 

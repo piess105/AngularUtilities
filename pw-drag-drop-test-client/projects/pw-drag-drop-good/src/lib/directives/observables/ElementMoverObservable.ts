@@ -1,6 +1,6 @@
 import { Injectable, Renderer2 } from "@angular/core";
 import { PwDragDropDirectiveProvider } from "../pw-drag-drop.directive";
-import { ObservableBase } from "./ObservableBase";
+import { ObservableBase, ObservableBaseGeneric } from "./ObservableBase";
 
 export class ElementWithReference {
     element!: Element;

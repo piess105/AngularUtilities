@@ -13,12 +13,15 @@ import { ReorderElementsOnMovingUpStrategy } from "./ReorderElementsOnMovingUpSt
 import { TryResetNoneMovingElementsTransformsAndRemoveNewIndexAttributeStrategy } from "./TryResetNoneMovingElementsTransformsAndRemoveNewIndexAttributeStrategy";
 import { TryNotifyClientStrategy } from "./TryNotifyClientStrategy";
 import { RemoveElementsRemindersStrategy } from "./RemoveElementsRemindersStrategy";
+import { ISomething } from "../ISomething";
+import { Subscription } from "rxjs";
 
 @Injectable()
-export class ReorderElementsStrategy implements IObserver {
+export class ReorderElementsStrategy implements ISomething {
 
     private _movingElementStartingPosition: number = 0;
     private _movingElementReference?: ElementWithReference;
+    private subscription! : Subscription;
 
     private _movingDirectionDeterminer: MovingDirectionDeterminerNotifiesWhenDirectionChange = new MovingDirectionDeterminerNotifiesWhenDirectionChange();
 
@@ -36,11 +39,16 @@ export class ReorderElementsStrategy implements IObserver {
 
         this._movingDirectionDeterminer.subscribe(this);
 
-        mouseListener.mouseUp.subscribe(x => this.onMouseUp(x));
+        this.subscription = mouseListener.mouseUp.subscribe(x => this.onMouseUp(x));
+    }
+
+    dispose(): void {
+        
+        this.subscription.unsubscribe();
     }
 
     private onMouseUp(event: MouseEvent): void {
-
+       
         if (this._movingElementReference == undefined)
             return;
 

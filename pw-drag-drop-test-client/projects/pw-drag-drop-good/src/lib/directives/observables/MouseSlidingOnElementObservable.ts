@@ -2,7 +2,7 @@ import { ElementRef, Injectable, Renderer2 } from "@angular/core";
 import { MouseListener } from "../listeners/MouseListener";
 import { ElementPositionModel } from "../models/ElementPositionModel";
 import { PointModel } from "../models/PointModel";
-import { ObservableBase } from "./ObservableBase";
+import { ObservableBase, ObservableBaseGeneric } from "./ObservableBase";
 
 
 @Injectable()

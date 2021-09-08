@@ -42,7 +42,7 @@ export class PwDragDropDirective {
   @Input() reference: any;
 
   constructor(
-    private provider : PwDragDropDirectiveProvider,
+    private provider: PwDragDropDirectiveProvider,
     private stateChanged: DirectiveStateChanger,
     private stateRegister: DirectiveStateRegister,
     private injector: Injector,
@@ -64,21 +64,22 @@ export class PwDragDropDirective {
 
   @HostListener('mousedown', ['$event'])
   onMouseDown(event: MouseEvent) {
-
     this.mouseListener.mouseDown.next(event);
+    event.stopPropagation();
   }
 
   @HostListener('window:mouseup', ['$event'])
   onMouseUp(event: MouseEvent) {
-
     this.mouseListener.mouseUp.next(event);
+    event.stopPropagation();
 
   }
 
   @HostListener('window:mousemove', ['$event'])
   onMouseMove(event: MouseEvent) {
-
     this.mouseListener.mouseMove.next(event);
+    event.stopPropagation();
+
   }
 
 }
