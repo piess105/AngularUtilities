@@ -26,7 +26,7 @@ export class TryConsumeSuppliedElementStrategy implements ISomething {
     }
 
     dispose(): void {
-        this.subscription.unsubscribe();
+        this.subscription?.unsubscribe();
     }
 
     execute(model: ElementWithReference) {
@@ -51,6 +51,8 @@ export class TryConsumeSuppliedElementStrategy implements ISomething {
 
             this.consumeSuppliedElement();
         }
+
+        this.dispose();
     }
 
     //#region HelperMethods

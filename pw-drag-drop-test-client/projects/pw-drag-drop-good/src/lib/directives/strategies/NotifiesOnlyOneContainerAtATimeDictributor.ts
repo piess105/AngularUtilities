@@ -28,10 +28,15 @@ export class NotifiesOnlyOneContainerAtATimeDictributor extends ObservableBaseGe
         observable.subscribe(new ObserverAction(x => this.onMouseUp(x)));
 
     }
+
     onMouseUp(x: any): void {
 
-      //  this._currentObserver?.dispose();
-        
+        //TODO: Invoke when DragFinished
+        setTimeout(() => {
+            this._currentObserver = undefined;
+            this._theMostTopContainer = undefined;
+            this._firstTheMostTopContainer = undefined;
+        }, 500); 
     }
 
     private onMouseMove(event: MouseEvent): void {

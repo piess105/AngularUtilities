@@ -44,7 +44,7 @@ export class ReorderElementsStrategy implements ISomething {
 
     dispose(): void {
         
-        this.subscription.unsubscribe();
+        this.subscription?.unsubscribe();
     }
 
     private onMouseUp(event: MouseEvent): void {
@@ -57,6 +57,8 @@ export class ReorderElementsStrategy implements ISomething {
         this.removeMovingElementRemindersStrategy.execute(this._movingElementReference);
 
         this.removeMovingElementReference();
+
+        this.dispose();
     }
 
     notified(type: DirectionType): void {
